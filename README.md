@@ -24,15 +24,17 @@ El campo `fotos` también acepta una URL completa, por si alguna imagen está al
 3. Pestaña **Publicar**:
    - **Descargar fotos.zip** (si agregaste fotos nuevas) y descomprimilo.
    - **Descargar datos.json**.
-4. En GitHub, **Add file → Upload files**: arrastrá el `datos.json` y la carpeta `fotos`.
-   Confirmá con **Commit changes**.
+4. Pasale los dos archivos a Claude. Los pone en la carpeta y los sube.
 5. Vercel redespliega solo en menos de un minuto.
 
-Usá **Upload files**, no el ícono del lápiz: GitHub no deja editar archivos grandes
-en el navegador, y nunca deja subir imágenes por esa vía.
+El repo está conectado: cada `git push` publica. Ya no hace falta subir nada
+a mano por la web de GitHub.
 
 Los cambios del panel se guardan en tu navegador mientras trabajás, pero **no llegan
-al sitio hasta que subís los archivos**.
+al sitio hasta que los archivos están subidos**.
+
+- Repo: `santimestralet-glitch/Mestra`
+- Sitio: https://mestra-three.vercel.app
 
 ## La clave del panel
 
