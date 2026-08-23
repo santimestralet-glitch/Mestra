@@ -1,13 +1,13 @@
 {
-  "build": "2026-08-23T19:05:00.000Z",
+  "build": "2026-08-23T20:30:00.000Z",
   "config": {
     "whatsapp": "5492235813019",
     "instagram": "victoria.modacircular",
     "direccion": "San Juan 319, Mar del Plata",
     "comoLlegar": "https://maps.google.com/?q=San+Juan+319+Mar+del+Plata",
     "horarios": [
-      "Jueves de 15 a 20",
-      "Sábados de 11 a 18"
+      "Lunes a viernes de 10 a 19",
+      "Sábados de 10 a 13"
     ],
     "pagos": [
       "Lo coordinamos por WhatsApp: te paso las formas de pago disponibles cuando reservás"
@@ -182,8 +182,8 @@
       "a": "Si compraste a distancia y la prenda no era como la describí, te devuelvo la plata. Si simplemente no te gustó cómo te queda, escribime y lo resolvemos."
     },
     {
-      "q": "¿Aceptan ropa en consignación?",
-      "a": "Sí. Me acercás las prendas, elijo las que entran y arreglamos el porcentaje. Cuando se venden, te paso tu parte. Escribime por WhatsApp y coordinamos."
+      "q": "¿Puedo llevar ropa que ya no uso?",
+      "a": "Sí. Traés las prendas y Victoria elige las que entran. Por las seleccionadas podés cobrar en el momento con la compra directa, o llevarte un crédito a cuenta para usar en tus próximas compras. Escribime por WhatsApp y coordinamos."
     },
     {
       "q": "¿Cómo sé que la ropa está en buen estado?",

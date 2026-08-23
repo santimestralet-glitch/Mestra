@@ -361,6 +361,27 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .peso{font-variant-numeric:tabular-nums;font-weight:600;}
 .peso.alto{color:var(--danger);}
 
+/* ---- fotos del local ----
+   Tres tomas reales, en 3:4 como las prendas. En el celular la tercera
+   se esconde para no apilar de más. */
+.local-strip{display:grid;gap:clamp(10px,1.5vw,16px);grid-template-columns:repeat(3,1fr);}
+.local-strip figure{margin:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface-2);box-shadow:var(--shadow);}
+.local-strip img{width:100%;height:100%;aspect-ratio:3/4;object-fit:cover;display:block;}
+@media (max-width:640px){
+  .local-strip{grid-template-columns:1fr 1fr;}
+  .local-strip figure:nth-child(3){display:none;}
+}
+/* Una toma del interior, muy tenue, detrás del bloque de datos.
+   z-index deja el texto por encima; opacidad baja para no taparlo. */
+.section.has-bg{position:relative;overflow:hidden;isolation:isolate;}
+.section.has-bg::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:url("fotos/local-interior.jpg") center 30%/cover no-repeat;
+  opacity:.10;
+}
+:root[data-theme="dark"] .section.has-bg::before{opacity:.14;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .section.has-bg::before{opacity:.14;} }
+
 .clave{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:20px;background:color-mix(in srgb, var(--ink) 60%, transparent);}
 .clave-caja{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 22px 50px -18px rgba(0,0,0,.55);}
 .clave-caja h2{font-family:var(--f-display);font-size:21px;margin-bottom:8px;}
@@ -405,7 +426,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
   <div class="wrap hero-grid" id="heroGrid">
     <div>
       <p class="eyebrow label">Feria de moda circular · Mar del Plata</p>
-      <h1>Cada prenda estuvo<em>en otro ropero</em></h1>
+      <h1>Cada prenda<em>merece otra vuelta</em></h1>
       <p class="hero-lead">
         Elegís la que te gusta, tocás el botón y me escribís directo por WhatsApp.
         Te la reservo hasta que la vengas a buscar. De cada una hay una sola:
@@ -500,7 +521,21 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
   </div>
 </section>
 
-<section class="section section--tint" id="donde">
+<section class="section" id="local">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Pasá por el local</h2>
+      <p>Estamos en San Juan 319. Lo que ves en la web es una parte: adentro hay muchísimo más para revolver con tiempo.</p>
+    </div>
+    <div class="local-strip">
+      <figure><img src="fotos/local-vidriera.jpg" alt="Vidriera de Victoria Moda Circular sobre la calle" loading="lazy"></figure>
+      <figure><img src="fotos/local-interior.jpg" alt="Percheros del local con prendas de todos los colores" loading="lazy"></figure>
+      <figure><img src="fotos/local-detalle.jpg" alt="El pasillo del local con las prendas colgadas" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint has-bg" id="donde">
   <div class="wrap">
     <div class="section-head"><h2>Dónde estamos y cómo se coordina</h2></div>
     <div class="info-grid" id="infoGrid"></div>
@@ -510,11 +545,11 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 <section class="band" id="dar">
   <div class="wrap band-inner">
     <div>
-      <h2>¿Tenés ropa que ya no usás?</h2>
-      <p>Recibo prendas en consignación: las sumo a la feria y, cuando se venden, te paso tu parte. También acepto donaciones para las que no entran en el catálogo. Escribime y coordinamos.</p>
+      <h2>¿Tenés ropa que querés renovar?</h2>
+      <p>Traés las prendas que ya no usás y, si Victoria las selecciona, elegís cómo darles valor: <strong>compra directa</strong> y cobrás en el momento, o <strong>crédito a cuenta</strong> para usar en tus próximas compras. Vendés lo que no usás, renovás tu placard, y el crédito te queda a vos. Escribime y coordinamos.</p>
     </div>
     <div class="band-cta">
-      <a class="btn btn-ghost" id="btnConsigna" href="#">Quiero dar mi ropa</a>
+      <a class="btn btn-ghost" id="btnConsigna" href="#">Quiero renovar mi placard</a>
     </div>
   </div>
 </section>
@@ -616,7 +651,7 @@ const DATOS_DEFECTO = {
     instagram: "victoria.modacircular",
     direccion: "San Juan 319, Mar del Plata",
     comoLlegar: "https://maps.google.com/?q=San+Juan+319+Mar+del+Plata",
-    horarios: ["Escribime por WhatsApp y coordinamos el día y la hora"],
+    horarios: ["Lunes a viernes de 10 a 19", "Sábados de 10 a 13"],
     pagos: ["Lo coordinamos por WhatsApp: te paso las formas de pago disponibles cuando reservás"],
     envios: ["Lo coordinamos por WhatsApp: según dónde estés vemos entrega en mano o envío"],
     feria: { fecha: null, lugar: "", nota: "" }
@@ -638,7 +673,7 @@ const DATOS_DEFECTO = {
     { q:"¿Cómo se paga?", a:"Lo arreglamos por WhatsApp cuando reservás. Te paso las formas de pago disponibles en ese momento." },
     { q:"¿Hacen envíos?", a:"Sí, lo vemos por WhatsApp según dónde estés. Puede ser entrega en mano o envío, y ahí te paso el costo." },
     { q:"¿Puedo devolver o cambiar algo?", a:"Si compraste a distancia y la prenda no era como la describí, te devuelvo la plata. Si simplemente no te gustó cómo te queda, escribime y lo resolvemos." },
-    { q:"¿Aceptan ropa en consignación?", a:"Sí. Me acercás las prendas, elijo las que entran y arreglamos el porcentaje. Cuando se venden, te paso tu parte. Escribime por WhatsApp y coordinamos." },
+    { q:"¿Puedo llevar ropa que ya no uso?", a:"Sí. Traés las prendas y Victoria elige las que entran. Por las seleccionadas podés cobrar en el momento con la compra directa, o llevarte un crédito a cuenta para usar en tus próximas compras. Escribime por WhatsApp y coordinamos." },
     { q:"¿Cómo sé que la ropa está en buen estado?", a:"Cada prenda tiene su estado con los cuadraditos: cuatro es «como nuevo» y uno es «con detalles». Si dice «con detalles», en la descripción explico exactamente cuál es." }
   ]
 };
@@ -999,7 +1034,7 @@ function renderFaq(){
 
 function renderFooter(){
   const c = D.config;
-  $("footNote").textContent = `Feria de moda circular en ${(c.direccion.split(",").pop() || "").trim() || "Mar del Plata"}. Reutilizar alarga la vida de la ropa y saca presión a la industria más contaminante después del petróleo.`;
+  $("footNote").textContent = `Feria de moda circular en ${(c.direccion.split(",").pop() || "").trim() || "Mar del Plata"}. Reutilizar alarga la vida de la ropa: así cada prenda tiene una oportunidad más.`;
   $("footLinks").innerHTML = `
     <a href="${waLink("¡Hola Victoria! Te escribo desde la página.")}" target="_blank" rel="noopener">${ICON_WA} WhatsApp</a>
     ${c.instagram ? `<a href="https://instagram.com/${esc(c.instagram)}" target="_blank" rel="noopener">
@@ -1009,7 +1044,7 @@ function renderFooter(){
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.6"></circle></svg>
       Cómo llegar</a>` : ""}`;
   const b = $("btnConsigna");
-  b.href = waLink("¡Hola Victoria! Tengo ropa que ya no uso y me gustaría dejártela en consignación. ¿Cómo hacemos?");
+  b.href = waLink("¡Hola Victoria! Tengo ropa que ya no uso y quiero renovar. ¿Me contás cómo funciona la compra directa y el crédito a cuenta?");
   b.target = "_blank"; b.rel = "noopener";
 }
 
