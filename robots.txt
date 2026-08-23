@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://victoria-moda-circular.vercel.app/sitemap.xml

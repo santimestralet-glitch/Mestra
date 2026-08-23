@@ -5,12 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Victoria Moda Circular</title>
 
-<meta name="description" content="Feria de ropa circular en Mar del Plata. Prendas seleccionadas de segunda mano, con talle, estado y precio a la vista. Reservás por WhatsApp.">
+<meta name="description" content="Ropa de segunda mano seleccionada en Mar del Plata. San Juan 319. Cada prenda con su talle, estado y precio a la vista; la reservás por WhatsApp.">
+<link rel="canonical" href="https://victoria-moda-circular.vercel.app/">
+
+<!-- La vista previa al compartir el link. Sin esto WhatsApp e Instagram
+     muestran un rectángulo gris, y por ahí pasan todas las ventas. -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Victoria Moda Circular">
-<meta property="og:description" content="Prendas con historia, buscando segunda dueña. Elegís acá, reservás por WhatsApp.">
+<meta property="og:title" content="Victoria Moda Circular · Mar del Plata">
+<meta property="og:description" content="Cada prenda merece otra vuelta. Elegís acá y la reservás por WhatsApp.">
+<meta property="og:url" content="https://victoria-moda-circular.vercel.app/">
+<meta property="og:image" content="https://victoria-moda-circular.vercel.app/fotos/og-portada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="La vidriera de Victoria Moda Circular en Mar del Plata">
 <meta property="og:locale" content="es_AR">
-<meta name="theme-color" content="#7A2E48">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#F1E9D9">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -396,6 +408,40 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .clave-acc .btn{flex:1;min-width:0;padding:12px 14px;}
 .clave-caja .fld + .fld{margin-top:12px;}
 </style>
+<!-- Ficha de negocio local para Google: dirección, horarios y contacto en el
+     formato que entiende el buscador. Ayuda a aparecer en "ropa usada mar del
+     plata" y en Maps. Si cambian los horarios, actualizar también acá. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ClothingStore",
+  "name": "Victoria Moda Circular",
+  "description": "Ropa de segunda mano seleccionada en Mar del Plata. Compra directa o crédito a cuenta por las prendas que ya no usás.",
+  "url": "https://victoria-moda-circular.vercel.app/",
+  "image": "https://victoria-moda-circular.vercel.app/fotos/og-portada.jpg",
+  "telephone": "+5492235813019",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "San Juan 319",
+    "addressLocality": "Mar del Plata",
+    "addressRegion": "Buenos Aires",
+    "addressCountry": "AR"
+  },
+  "sameAs": ["https://instagram.com/victoria.modacircular"],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "10:00", "closes": "19:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "10:00", "closes": "13:00"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
