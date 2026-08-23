@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Victoria Moda Circular</title>
+
+<meta name="description" content="Feria de ropa circular en Mar del Plata. Prendas seleccionadas de segunda mano, con talle, estado y precio a la vista. Reservás por WhatsApp.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Victoria Moda Circular">
+<meta property="og:description" content="Prendas con historia, buscando segunda dueña. Elegís acá, reservás por WhatsApp.">
+<meta property="og:locale" content="es_AR">
+<meta name="theme-color" content="#7A2E48">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&display=swap">
+
+<style>
+/* ============================================================
+   TOKENS — paleta light completa en :root; el modo oscuro sólo
+   redefine tokens, en los tres estados (sistema / dark / light).
+   ============================================================ */
+:root{
+  --bg:#F6F3F0; --surface:#FFFFFF; --surface-2:#EDE6E4; --surface-3:#E3D9D8;
+  --ink:#241A1E; --muted:#6B5B61; --line:#DBD0CE; --line-strong:#C3B3B1;
+  --accent:#7A2E48; --accent-hover:#5E2137; --accent-ink:#FFFFFF; --accent-wash:#F3E9EC;
+  --wa:#0E7A40; --wa-hover:#0A6033; --wa-ink:#FFFFFF;
+  --warn:#8A4B12; --danger:#A32020;
+  --shadow:0 1px 2px rgba(36,26,30,.06), 0 8px 24px -12px rgba(36,26,30,.18);
+  --shadow-lift:0 2px 4px rgba(36,26,30,.08), 0 18px 40px -18px rgba(36,26,30,.28);
+  --radius:6px; --maxw:1120px; --gutter:clamp(18px, 4vw, 40px);
+  --f-display:'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --f-body:'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171114; --surface:#211A1D; --surface-2:#2B2225; --surface-3:#382C30;
+    --ink:#F4ECEE; --muted:#B7A6AC; --line:#3A2E32; --line-strong:#54444A;
+    --accent:#E594AE; --accent-hover:#F0AEC2; --accent-ink:#2A0F1B; --accent-wash:#2C1A21;
+    --wa:#2FBE68; --wa-hover:#4FD183; --wa-ink:#08170E;
+    --warn:#E0A867; --danger:#F08A8A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --shadow-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 40px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171114; --surface:#211A1D; --surface-2:#2B2225; --surface-3:#382C30;
+  --ink:#F4ECEE; --muted:#B7A6AC; --line:#3A2E32; --line-strong:#54444A;
+  --accent:#E594AE; --accent-hover:#F0AEC2; --accent-ink:#2A0F1B; --accent-wash:#2C1A21;
+  --wa:#2FBE68; --wa-hover:#4FD183; --wa-ink:#08170E;
+  --warn:#E0A867; --danger:#F08A8A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 40px -18px rgba(0,0,0,.8);
+}
+
+/* ============================================================ BASE */
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}
+h1,h2,h3{font-family:var(--f-display);font-variation-settings:'SOFT' 18,'WONK' 1;font-weight:700;line-height:1.02;margin:0;text-wrap:balance;letter-spacing:-.015em;}
+p,figure,blockquote,dl,dd{margin:0;}
+a{color:var(--accent);text-underline-offset:3px;}
+button{font:inherit;color:inherit;}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:3px;}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter);}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--accent);color:var(--accent-ink);padding:12px 18px;border-radius:0 0 var(--radius) 0;font-weight:600;}
+.skip:focus{left:0;}
+.label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-family:var(--f-body);}
+[hidden]{display:none !important;}
+
+/* ============================================================ MASTHEAD */
+.masthead{border-bottom:1px solid var(--line);background:var(--surface);}
+.nav{display:flex;align-items:center;gap:16px;padding-block:14px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;color:var(--ink);margin-right:auto;}
+.brand-mark{width:34px;height:34px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:18px;font-variation-settings:'WONK' 1;padding-bottom:2px;}
+.brand-name{font-family:var(--f-display);font-weight:700;font-size:19px;letter-spacing:-.01em;}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:10px 12px;border-radius:var(--radius);min-height:44px;display:flex;align-items:center;}
+.nav-links a:hover{color:var(--ink);background:var(--surface-2);}
+.theme-toggle{min-width:44px;min-height:44px;display:grid;place-items:center;background:none;border:1px solid var(--line);border-radius:var(--radius);cursor:pointer;color:var(--muted);}
+.theme-toggle:hover{color:var(--ink);border-color:var(--line-strong);}
+@media (max-width:700px){ .nav-links{display:none;} }
+
+/* ============================================================ HERO */
+.hero{background:var(--surface);border-bottom:1px solid var(--line);padding-block:clamp(32px,6vw,56px);}
+.hero-grid{display:grid;gap:clamp(24px,4vw,48px);grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;}
+.hero-grid.solo{grid-template-columns:minmax(0,1fr);max-width:760px;}
+@media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
+.eyebrow{color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.eyebrow::after{content:"";height:1px;flex:1;background:var(--line-strong);max-width:80px;}
+.hero h1{font-size:clamp(38px,7vw,68px);font-variation-settings:'SOFT' 30,'WONK' 1;font-weight:800;margin-bottom:16px;}
+.hero h1 em{font-style:normal;color:var(--accent);display:block;}
+.hero-lead{font-size:clamp(16px,1.6vw,18px);color:var(--muted);max-width:46ch;margin-bottom:26px;}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:12px 22px;border-radius:var(--radius);border:1px solid transparent;font-size:15px;font-weight:600;text-decoration:none;cursor:pointer;transition:background-color .16s ease,border-color .16s ease,transform .16s ease;}
+.btn:active{transform:translateY(1px);}
+.btn-wa{background:var(--wa);color:var(--wa-ink);}
+.btn-wa:hover{background:var(--wa-hover);}
+.btn-solid{background:var(--accent);color:var(--accent-ink);}
+.btn-solid:hover{background:var(--accent-hover);}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong);}
+.btn-ghost:hover{background:var(--surface-2);}
+.btn svg{flex:none;}
+
+.feria-card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
+.feria-card .label{color:var(--muted);}
+.feria-when{font-family:var(--f-display);font-weight:700;font-size:26px;line-height:1.1;font-variation-settings:'SOFT' 20,'WONK' 1;margin:8px 0 4px;}
+.feria-when::first-letter{text-transform:uppercase;}
+.feria-count{color:var(--accent);font-weight:700;font-size:14px;margin-bottom:14px;font-variant-numeric:tabular-nums;}
+.feria-rows{display:grid;gap:9px;border-top:1px solid var(--line);padding-top:14px;}
+.feria-row{display:flex;gap:12px;font-size:14px;align-items:baseline;}
+.feria-row dt{color:var(--muted);flex:none;width:74px;font-size:12.5px;}
+.feria-row dd{font-weight:500;}
+
+/* ============================================================ SECCIONES */
+.section{padding-block:clamp(48px,7vw,80px);}
+.section--tint{background:var(--surface);border-block:1px solid var(--line);}
+.section-head{margin-bottom:clamp(24px,3vw,36px);}
+.section-head h2{font-size:clamp(28px,4vw,40px);font-variation-settings:'SOFT' 24,'WONK' 1;}
+.section-head p{color:var(--muted);margin-top:10px;max-width:58ch;}
+
+/* ============================================================ TOOLBAR */
+.toolbar{display:grid;gap:14px;margin-bottom:26px;}
+.toolbar-top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.search{position:relative;flex:1 1 240px;min-width:0;}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+.search input{width:100%;min-height:46px;padding:10px 14px 10px 40px;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;}
+.search input::placeholder{color:var(--muted);}
+.toolbar select{min-height:46px;padding:10px 14px;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--surface);color:var(--ink);font-size:14.5px;font-family:inherit;cursor:pointer;}
+.chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{min-height:44px;padding:8px 16px;border:1px solid var(--line-strong);border-radius:100px;background:transparent;cursor:pointer;font-size:13.5px;font-weight:500;transition:background-color .15s ease,color .15s ease,border-color .15s ease;}
+.chip:hover{background:var(--surface-2);}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+.count-line{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+
+/* ============================================================ GRID / CARD */
+.grid{display:grid;gap:clamp(18px,2.4vw,28px);grid-template-columns:repeat(auto-fill,minmax(250px,1fr));}
+@media (max-width:560px){ .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;} }
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:box-shadow .18s ease,transform .18s ease,border-color .18s ease;}
+.card:hover{box-shadow:var(--shadow-lift);transform:translateY(-2px);border-color:var(--line-strong);}
+.card[data-venta="vendida"]{opacity:.55;}
+.card[data-venta="vendida"]:hover{transform:none;box-shadow:var(--shadow);}
+.card-photo{position:relative;aspect-ratio:3/4;background:var(--surface-2);overflow:hidden;}
+.card-photo img{width:100%;height:100%;object-fit:cover;}
+.photo-empty{width:100%;height:100%;display:grid;place-items:center;gap:6px;align-content:center;color:var(--muted);text-align:center;padding:14px;background-image:repeating-linear-gradient(45deg,transparent 0 9px,var(--surface-3) 9px 10px);}
+.photo-empty span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;}
+.fav-btn{position:absolute;top:8px;right:8px;z-index:2;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--muted);cursor:pointer;transition:color .15s ease,transform .15s ease;}
+.fav-btn:hover{color:var(--accent);transform:scale(1.06);}
+.fav-btn[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);}
+.fav-btn[aria-pressed="true"] svg{fill:currentColor;}
+.badge{position:absolute;top:12px;left:0;z-index:2;padding:5px 11px 5px 10px;background:var(--accent);color:var(--accent-ink);font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;border-radius:0 3px 3px 0;}
+.badge--hold{background:var(--warn);color:#FFFFFF;}
+:root[data-theme="dark"] .badge--hold{color:#17110F;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .badge--hold{color:#17110F;} }
+.sold-veil{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:color-mix(in srgb, var(--ink) 55%, transparent);}
+.sold-veil span{border:2px solid var(--surface);color:var(--surface);padding:7px 16px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transform:rotate(-6deg);}
+.card-tape{display:flex;justify-content:space-between;gap:10px;padding:7px 13px;background:var(--accent-wash);border-bottom:1px solid var(--line);color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;}
+.card-tape .ref{color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.08em;}
+.card-body{padding:13px;display:flex;flex-direction:column;gap:9px;flex:1;}
+.card-name{font-size:15.5px;font-weight:600;line-height:1.25;}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.45;}
+.card-specs{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:9px;border-top:1px solid var(--line);margin-top:auto;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted);}
+.wear{display:flex;gap:3px;align-items:center;}
+.wear i{width:7px;height:7px;background:var(--line-strong);border-radius:1px;display:block;}
+.wear i.on{background:var(--accent);}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.price{font-family:var(--f-display);font-weight:700;font-size:21px;font-variation-settings:'SOFT' 10,'WONK' 0;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+.card-actions{display:flex;gap:6px;}
+.icon-btn{width:44px;height:44px;flex:none;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:var(--radius);background:transparent;cursor:pointer;color:var(--muted);}
+.icon-btn:hover{background:var(--surface-2);color:var(--ink);}
+.buy-btn{min-height:44px;padding:10px 15px;background:var(--wa);color:var(--wa-ink);border:none;border-radius:var(--radius);cursor:pointer;font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:background-color .15s ease;}
+.buy-btn:hover{background:var(--wa-hover);}
+.buy-btn[disabled]{background:var(--surface-3);color:var(--muted);cursor:not-allowed;}
+.card-admin{display:flex;gap:6px;padding:0 13px 13px;}
+.card-admin button{flex:1;min-height:38px;font-size:12px;font-weight:600;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--surface-2);cursor:pointer;}
+.card-admin button.del{color:var(--danger);border-color:var(--danger);background:transparent;}
+.empty-state{grid-column:1/-1;text-align:center;padding:56px 20px;border:1px dashed var(--line-strong);border-radius:var(--radius);}
+.empty-state strong{display:block;font-family:var(--f-display);font-size:21px;margin-bottom:6px;}
+.empty-state p{color:var(--muted);font-size:14.5px;}
+
+/* ============================================================ PASOS */
+.steps{display:grid;gap:clamp(18px,2.5vw,26px);grid-template-columns:repeat(auto-fit,minmax(230px,1fr));counter-reset:step;}
+.step{border-top:2px solid var(--accent);padding-top:18px;}
+.step::before{counter-increment:step;content:"Paso " counter(step);display:block;margin-bottom:9px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);}
+.step h3{font-size:19px;margin-bottom:7px;font-variation-settings:'SOFT' 16,'WONK' 0;}
+.step p{color:var(--muted);font-size:14.5px;}
+
+/* ============================================================ RESEÑAS */
+.rev-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
+.rev-avg{font-family:var(--f-display);font-weight:800;font-size:46px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums;font-variation-settings:'SOFT' 20,'WONK' 1;}
+.stars{color:var(--accent);letter-spacing:2px;font-size:16px;}
+.rev-count{color:var(--muted);font-size:13.5px;}
+.rev-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));}
+.rev{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:9px;}
+.rev-q{font-size:14.5px;line-height:1.55;}
+.rev-by{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-top:auto;padding-top:9px;border-top:1px solid var(--line);}
+.rev-name{font-weight:600;font-size:13.5px;}
+.rev-date{color:var(--muted);font-size:12px;}
+
+/* ============================================================ INFO */
+.info-grid{display:grid;gap:clamp(18px,3vw,32px);grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+.info-block h3{font-size:17px;margin-bottom:10px;font-variation-settings:'SOFT' 14,'WONK' 0;}
+.info-block p,.info-block li{color:var(--muted);font-size:14.5px;}
+.info-block ul{margin:0;padding-left:18px;display:grid;gap:5px;}
+
+/* ============================================================ BANDA */
+.band{background:var(--accent);color:var(--accent-ink);padding-block:clamp(40px,6vw,64px);}
+.band-inner{display:grid;gap:26px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:center;}
+@media (max-width:760px){ .band-inner{grid-template-columns:1fr;} }
+.band h2{font-size:clamp(26px,3.6vw,38px);font-variation-settings:'SOFT' 26,'WONK' 1;margin-bottom:12px;}
+.band p{opacity:.86;max-width:52ch;font-size:15.5px;}
+.band .btn-ghost{border-color:color-mix(in srgb, var(--accent-ink) 45%, transparent);color:var(--accent-ink);}
+.band .btn-ghost:hover{background:color-mix(in srgb, var(--accent-ink) 12%, transparent);}
+.band-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;}
+@media (max-width:760px){ .band-cta{justify-content:flex-start;} }
+
+/* ============================================================ FAQ */
+.faq{border-top:1px solid var(--line);max-width:760px;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{width:100%;min-height:56px;padding:16px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;background:none;border:none;cursor:pointer;text-align:left;font-size:16px;font-weight:600;}
+.faq-q:hover{color:var(--accent);}
+.faq-q .caret{flex:none;color:var(--accent);transition:transform .2s ease;}
+.faq-q[aria-expanded="true"] .caret{transform:rotate(180deg);}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .24s ease;}
+.faq-q[aria-expanded="true"] + .faq-a{grid-template-rows:1fr;}
+.faq-a > div{overflow:hidden;}
+.faq-a p{color:var(--muted);font-size:14.5px;line-height:1.6;padding-bottom:18px;max-width:62ch;}
+
+/* ============================================================ FOOTER / BARRA */
+footer{background:var(--surface);border-top:1px solid var(--line);padding-block:44px;}
+.foot-grid{display:flex;gap:26px;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;}
+.foot-links{display:flex;gap:8px;flex-wrap:wrap;}
+.foot-links a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 14px;border:1px solid var(--line-strong);border-radius:var(--radius);color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;}
+.foot-links a:hover{background:var(--surface-2);}
+.foot-note{color:var(--muted);font-size:13px;max-width:38ch;}
+.foot-admin{width:100%;margin-top:24px;padding-top:18px;border-top:1px solid var(--line);}
+.foot-admin button{min-height:40px;padding:8px 14px;font-size:12.5px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:var(--radius);cursor:pointer;}
+.foot-admin button:hover{color:var(--ink);border-color:var(--line-strong);}
+
+.mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;gap:10px;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -8px 24px -12px rgba(36,26,30,.3);}
+.mobile-bar .btn{flex:1;}
+@media (max-width:700px){ .mobile-bar{display:flex;} body{padding-bottom:80px;} }
+
+/* ============================================================
+   PANEL DE ORGANIZADORA
+   ============================================================ */
+.admin-flag{
+  position:sticky;top:0;z-index:70;
+  background:var(--warn);color:#FFFFFF;
+  padding:9px var(--gutter);font-size:13px;font-weight:600;
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+}
+:root[data-theme="dark"] .admin-flag{color:#17110F;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .admin-flag{color:#17110F;} }
+.admin-flag button{margin-left:auto;min-height:36px;padding:6px 14px;border:1px solid currentColor;background:transparent;color:inherit;border-radius:var(--radius);cursor:pointer;font-size:12.5px;font-weight:600;}
+
+.panel{
+  position:fixed;inset:0;z-index:100;
+  background:color-mix(in srgb, var(--ink) 45%, transparent);
+  display:flex;justify-content:flex-end;
+}
+.panel-inner{
+  width:min(560px,100%);height:100%;
+  background:var(--bg);border-left:1px solid var(--line);
+  display:flex;flex-direction:column;
+}
+.panel-head{display:flex;align-items:center;gap:12px;padding:16px var(--gutter);border-bottom:1px solid var(--line);background:var(--surface);}
+.panel-head h2{font-size:20px;margin-right:auto;}
+.panel-close{width:44px;height:44px;flex:none;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:var(--radius);background:transparent;cursor:pointer;}
+.panel-tabs{display:flex;gap:4px;padding:10px var(--gutter);border-bottom:1px solid var(--line);background:var(--surface);overflow-x:auto;}
+.panel-tabs button{min-height:40px;padding:8px 14px;white-space:nowrap;border:1px solid transparent;background:transparent;border-radius:var(--radius);cursor:pointer;font-size:13.5px;font-weight:600;color:var(--muted);}
+.panel-tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);}
+.panel-body{flex:1;overflow-y:auto;padding:var(--gutter);display:grid;gap:18px;align-content:start;}
+
+.fld{display:grid;gap:6px;}
+.fld > label{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.fld input,.fld select,.fld textarea{
+  width:100%;min-height:44px;padding:10px 12px;
+  border:1px solid var(--line-strong);border-radius:var(--radius);
+  background:var(--surface);color:var(--ink);font-family:inherit;font-size:15px;
+}
+.fld textarea{min-height:80px;resize:vertical;line-height:1.5;}
+.fld .hint{font-size:12.5px;color:var(--muted);}
+.fld2{display:grid;gap:12px;grid-template-columns:1fr 1fr;}
+@media (max-width:460px){ .fld2{grid-template-columns:1fr;} }
+
+.panel-actions{display:flex;gap:10px;flex-wrap:wrap;padding:14px var(--gutter);border-top:1px solid var(--line);background:var(--surface);}
+.panel-actions .btn{flex:1;min-width:140px;}
+
+.adm-list{display:grid;gap:10px;}
+.adm-row{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);}
+.adm-thumb{width:46px;height:60px;flex:none;border-radius:3px;object-fit:cover;background:var(--surface-3);}
+.adm-row .txt{flex:1;min-width:0;}
+.adm-row .txt b{display:block;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.adm-row .txt span{font-size:12px;color:var(--muted);}
+.adm-row button{min-width:44px;min-height:44px;border:1px solid var(--line-strong);border-radius:var(--radius);background:transparent;cursor:pointer;font-size:12px;padding:6px 10px;}
+.adm-row button.del{color:var(--danger);border-color:var(--danger);}
+
+.fotos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.foto-slot{position:relative;aspect-ratio:3/4;border-radius:3px;overflow:hidden;border:1px solid var(--line);}
+.foto-slot img{width:100%;height:100%;object-fit:cover;}
+.foto-slot button{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,.7);color:#fff;cursor:pointer;font-size:13px;line-height:1;}
+.foto-add{border:1.5px dashed var(--line-strong);border-radius:3px;aspect-ratio:3/4;display:grid;place-items:center;text-align:center;padding:8px;cursor:pointer;color:var(--muted);font-size:12px;background:var(--surface-2);}
+
+.nota{border-left:3px solid var(--accent);background:var(--surface);padding:14px 16px;border-radius:0 var(--radius) var(--radius) 0;font-size:14px;color:var(--muted);line-height:1.55;}
+.nota strong{color:var(--ink);}
+.peso{font-variant-numeric:tabular-nums;font-weight:600;}
+.peso.alto{color:var(--danger);}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#prendas">Ir al catálogo</a>
+
+<div class="admin-flag" id="adminFlag" hidden>
+  <span id="adminFlagTxt">Modo organizadora — estás editando tu borrador</span>
+  <button type="button" id="abrirPanel">Abrir panel</button>
+</div>
+
+<header class="masthead">
+  <nav class="wrap nav" aria-label="Principal">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true">V</span>
+      <span class="brand-name">Victoria</span>
+    </a>
+    <div class="nav-links">
+      <a href="#prendas">Prendas</a>
+      <a href="#como-comprar">Cómo comprar</a>
+      <a href="#donde">Dónde estamos</a>
+      <a href="#faq">Preguntas</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Cambiar entre modo claro y oscuro">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.5"></circle>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap hero-grid" id="heroGrid">
+    <div>
+      <p class="eyebrow label">Feria de moda circular</p>
+      <h1>Prendas con historia<em>buscando segunda dueña</em></h1>
+      <p class="hero-lead">
+        Elegís acá abajo la que te gusta, tocás el botón y me escribís directo por WhatsApp.
+        Te la reservo hasta que la vengas a buscar. Cada prenda que se va es una prenda menos en el descarte.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="#prendas">Ver las prendas</a>
+        <a class="btn btn-ghost" href="#dar">Tengo ropa para dar</a>
+      </div>
+    </div>
+    <aside class="feria-card" id="feriaCard" aria-labelledby="feriaTitle" hidden>
+      <p class="label" id="feriaTitle">Próxima feria</p>
+      <p class="feria-when" id="feriaWhen">—</p>
+      <p class="feria-count" id="feriaCount"></p>
+      <dl class="feria-rows" id="feriaRows"></dl>
+    </aside>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="prendas">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Lo que hay ahora</h2>
+      <p>Todo lo que ves está disponible salvo que diga lo contrario. Los precios son finales, sin vueltas.</p>
+    </div>
+    <div class="toolbar">
+      <div class="toolbar-top">
+        <div class="search">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path>
+          </svg>
+          <label class="skip" for="q">Buscar prenda</label>
+          <input type="search" id="q" placeholder="Buscar campera, vestido, talle M…" autocomplete="off">
+        </div>
+        <label class="skip" for="orden">Ordenar por</label>
+        <select id="orden">
+          <option value="nuevas">Más nuevas primero</option>
+          <option value="precio-asc">Precio: de menor a mayor</option>
+          <option value="precio-desc">Precio: de mayor a menor</option>
+        </select>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por categoría"></div>
+      <p class="count-line" id="countLine" role="status"></p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="section section--tint" id="como-comprar">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Cómo comprar</h2>
+      <p>Sin carrito, sin registro, sin tarjeta cargada en ningún lado. Tres pasos y listo.</p>
+    </div>
+    <div class="steps">
+      <article class="step">
+        <h3>Elegís la prenda</h3>
+        <p>Cada una tiene su talle, su estado real y su precio final a la vista. Si te gustan varias, marcalas con el corazón y las consultás todas juntas.</p>
+      </article>
+      <article class="step">
+        <h3>Me escribís por WhatsApp</h3>
+        <p>El botón abre el chat con el mensaje ya armado y el código de la prenda. Yo sé al toque cuál es y te confirmo si sigue disponible.</p>
+      </article>
+      <article class="step">
+        <h3>Coordinamos y te la llevás</h3>
+        <p>Ahí arreglamos cómo pagás y cómo te llega. Te la reservo mientras tanto.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="resenas" hidden>
+  <div class="wrap">
+    <div class="section-head"><h2>Lo que dicen las que ya vinieron</h2></div>
+    <div class="rev-head">
+      <span class="rev-avg" id="revAvg">—</span>
+      <div>
+        <div class="stars" id="revStars" aria-hidden="true"></div>
+        <p class="rev-count" id="revCount"></p>
+      </div>
+    </div>
+    <div class="rev-grid" id="revGrid"></div>
+  </div>
+</section>
+
+<section class="section section--tint" id="donde">
+  <div class="wrap">
+    <div class="section-head"><h2>Dónde estamos y cómo se coordina</h2></div>
+    <div class="info-grid" id="infoGrid"></div>
+  </div>
+</section>
+
+<section class="band" id="dar">
+  <div class="wrap band-inner">
+    <div>
+      <h2>¿Tenés ropa que ya no usás?</h2>
+      <p>Recibo prendas en consignación: las sumo a la feria y, cuando se venden, te paso tu parte. También acepto donaciones para las que no entran en el catálogo. Escribime y coordinamos.</p>
+    </div>
+    <div class="band-cta">
+      <a class="btn btn-ghost" id="btnConsigna" href="#">Quiero dar mi ropa</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head"><h2>Preguntas frecuentes</h2></div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <a class="brand" href="#top" style="margin-bottom:12px;">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span class="brand-name">Victoria</span>
+      </a>
+      <p class="foot-note" id="footNote"></p>
+    </div>
+    <div class="foot-links" id="footLinks"></div>
+    <div class="foot-admin">
+      <button type="button" id="btnAdmin">Soy la organizadora</button>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-bar">
+  <a class="btn btn-ghost" href="#prendas">Ver prendas</a>
+  <a class="btn btn-wa" id="barWa" href="#">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 5.83 2.42 8.19 8.19 0 0 1 2.41 5.82c0 4.54-3.69 8.24-8.24 8.24Zm4.52-6.16c-.25-.13-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.76-1.84-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.19 3.7.59.25 1.04.4 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>
+    Escribirme
+  </a>
+</div>
+
+<!-- Panel de organizadora -->
+<div class="panel" id="panel" hidden>
+  <div class="panel-inner" role="dialog" aria-modal="true" aria-label="Panel de organizadora">
+    <div class="panel-head">
+      <h2>Panel</h2>
+      <button class="panel-close" id="cerrarPanel" aria-label="Cerrar panel">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+    </div>
+    <div class="panel-tabs" role="tablist">
+      <button role="tab" data-tab="prendas"  aria-selected="true">Prendas</button>
+      <button role="tab" data-tab="info"     aria-selected="false">Información</button>
+      <button role="tab" data-tab="resenas"  aria-selected="false">Reseñas</button>
+      <button role="tab" data-tab="faqs"     aria-selected="false">Preguntas</button>
+      <button role="tab" data-tab="publicar" aria-selected="false">Publicar</button>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+    <div class="panel-actions" id="panelActions"></div>
+  </div>
+</div>
+
+<input type="file" id="fotoInput" accept="image/*" multiple hidden>
+
+<script>
+/* ==============================================================
+   VICTORIA MODA CIRCULAR
+   ---------------------------------------------------------------
+   El catálogo NO vive acá: vive en el archivo datos.json que está
+   al lado de este. Este archivo es sólo el diseño y nunca cambia.
+
+   Para editar el catálogo: botón "Soy la organizadora" abajo de todo.
+   Los cambios se guardan en tu navegador mientras trabajás, y con
+   "Descargar datos.json" bajás el archivo actualizado para subirlo.
+
+   Lo de abajo es una copia de respaldo por si datos.json no carga.
+   ============================================================== */
+const DATOS_DEFECTO = {
+  build: "2026-08-22T21:40:00",
+  config: {
+    whatsapp: "5492235813019",
+    instagram: "victoria.modacircular",
+    direccion: "San Juan 319, Mar del Plata",
+    comoLlegar: "https://maps.google.com/?q=San+Juan+319+Mar+del+Plata",
+    horarios: ["Escribime por WhatsApp y coordinamos el día y la hora"],
+    pagos: ["Lo coordinamos por WhatsApp: te paso las formas de pago disponibles cuando reservás"],
+    envios: ["Lo coordinamos por WhatsApp: según dónde estés vemos entrega en mano o envío"],
+    feria: { fecha: null, lugar: "", nota: "" }
+  },
+  prendas: [
+    { ref:"V-101", nombre:"Campera de jean oversize", categoria:"Camperas",   talle:"M",     estado:"Muy bueno",  precio:9000,  desc:"Lavado claro, corte ancho. Ideal entretiempo.",       fotos:[], venta:"disponible", nueva:true  },
+    { ref:"V-102", nombre:"Vestido de lino crudo",    categoria:"Vestidos",   talle:"S",     estado:"Como nuevo", precio:12000, desc:"Tela liviana, usado una sola vez. Largo midi.",       fotos:[], venta:"disponible", nueva:true  },
+    { ref:"V-103", nombre:"Botas texanas de cuero",   categoria:"Calzado",    talle:"38",    estado:"Bueno",      precio:15000, desc:"Cuero genuino. Algo de uso en la suela, nada roto.", fotos:[], venta:"disponible", nueva:false },
+    { ref:"V-104", nombre:"Tapado de paño gris",      categoria:"Abrigos",    talle:"L",     estado:"Muy bueno",  precio:18000, desc:"Corte recto, forrado. Un clásico que no falla.",      fotos:[], venta:"disponible", nueva:false },
+    { ref:"V-105", nombre:"Camisa de seda estampada", categoria:"Camisas",    talle:"M",     estado:"Como nuevo", precio:7500,  desc:"Estampa floral chica, caída divina.",                 fotos:[], venta:"reservada",  nueva:false },
+    { ref:"V-106", nombre:"Pantalón sastrero negro",  categoria:"Pantalones", talle:"40",    estado:"Muy bueno",  precio:8500,  desc:"Tiro alto, pierna ancha. Con pinzas.",                fotos:[], venta:"disponible", nueva:false },
+    { ref:"V-107", nombre:"Sweater de lana trenzado", categoria:"Sweaters",   talle:"Único", estado:"Bueno",      precio:6500,  desc:"Lana gruesa color crudo. Un pelotita en la manga.",   fotos:[], venta:"disponible", nueva:true  },
+    { ref:"V-108", nombre:"Falda plisada midi",       categoria:"Faldas",     talle:"S",     estado:"Como nuevo", precio:7000,  desc:"Verde botella, plisado impecable.",                   fotos:[], venta:"disponible", nueva:false }
+  ],
+  resenas: [],
+  faqs: [
+    { q:"¿Puedo probarme la ropa antes de comprar?", a:"Sí. Coordinamos por WhatsApp y te la probás con tiempo. Si comprás a distancia, decime tu talle habitual y te paso las medidas exactas de la prenda antes de que decidas." },
+    { q:"¿Cómo reservo una prenda?", a:"Tocás el botón verde de la prenda que te gusta. Se abre WhatsApp con el mensaje ya escrito y el código incluido. Te confirmo si sigue disponible y te la reservo." },
+    { q:"¿Cómo se paga?", a:"Lo arreglamos por WhatsApp cuando reservás. Te paso las formas de pago disponibles en ese momento." },
+    { q:"¿Hacen envíos?", a:"Sí, lo vemos por WhatsApp según dónde estés. Puede ser entrega en mano o envío, y ahí te paso el costo." },
+    { q:"¿Puedo devolver o cambiar algo?", a:"Si compraste a distancia y la prenda no era como la describí, te devuelvo la plata. Si simplemente no te gustó cómo te queda, escribime y lo resolvemos." },
+    { q:"¿Aceptan ropa en consignación?", a:"Sí. Me acercás las prendas, elijo las que entran y arreglamos el porcentaje. Cuando se venden, te paso tu parte. Escribime por WhatsApp y coordinamos." },
+    { q:"¿Cómo sé que la ropa está en buen estado?", a:"Cada prenda tiene su estado con los cuadraditos: cuatro es «como nuevo» y uno es «con detalles». Si dice «con detalles», en la descripción explico exactamente cuál es." }
+  ]
+};
+
+const DRAFT_KEY = "victoria:borrador";
+const FAV_KEY   = "victoria:favoritas";
+const TEMA_KEY  = "victoria:tema";
+
+let D = null;            // datos activos
+let esAdmin = false;
+let hayBorrador = false;
+let tabActiva = "prendas";
+let editandoRef = null;  // ref de la prenda que se está editando
+let fotosTmp = [];       // fotos del formulario abierto
+
+/* ---------- utilidades ---------- */
+const $ = (id) => document.getElementById(id);
+const ESTADOS = { "Como nuevo":4, "Muy bueno":3, "Bueno":2, "Con detalles":1 };
+const CATEGORIAS = ["Camperas","Abrigos","Sweaters","Camisas","Remeras","Vestidos","Faldas","Pantalones","Calzado","Accesorios"];
+
+const money = (n) => "$" + Number(n || 0).toLocaleString("es-AR");
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const waLink = (t) => `https://wa.me/${D.config.whatsapp}?text=${encodeURIComponent(t)}`;
+const lineas = (arr) => (Array.isArray(arr) ? arr : String(arr || "").split("\n")).map(s => String(s).trim()).filter(Boolean);
+
+const ICON_WA = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.25-8.23a8.2 8.2 0 0 1 5.83 2.42 8.19 8.19 0 0 1 2.41 5.82c0 4.54-3.69 8.24-8.24 8.24Zm4.52-6.16c-.25-.13-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.76-1.84-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.19 3.7.59.25 1.04.4 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>';
+
+/* ---------- favoritas (de este dispositivo) ---------- */
+let favoritas = [];
+try { favoritas = JSON.parse(localStorage.getItem(FAV_KEY)) || []; } catch(e){ favoritas = []; }
+const guardarFavoritas = () => { try { localStorage.setItem(FAV_KEY, JSON.stringify(favoritas)); } catch(e){} };
+
+/* ==============================================================
+   CARGA DE DATOS
+   1. datos.json  →  2. borrador local (sólo si es más nuevo)
+   ============================================================== */
+async function cargarDatos(){
+  let base = null;
+  try {
+    const r = await fetch("datos.json", { cache:"no-store" });
+    if(r.ok) base = await r.json();
+  } catch(e){ /* archivo local sin servidor, o datos.json ausente */ }
+  if(!base) base = JSON.parse(JSON.stringify(DATOS_DEFECTO));
+
+  try {
+    const b = JSON.parse(localStorage.getItem(DRAFT_KEY));
+    // El borrador sólo pisa al publicado si es posterior al build.
+    if(b && b.savedAt && (!base.build || b.savedAt > base.build)){
+      base = b; hayBorrador = true;
+    }
+  } catch(e){}
+
+  base.config = Object.assign({}, DATOS_DEFECTO.config, base.config || {});
+  base.config.feria = Object.assign({fecha:null,lugar:"",nota:""}, base.config.feria || {});
+  base.prendas = base.prendas || [];
+  base.resenas = base.resenas || [];
+  base.faqs    = base.faqs    || [];
+  D = base;
+}
+
+/* ¿Este navegador nos deja guardar? En un archivo abierto con doble clic,
+   en incógnito o dentro de un visor sandboxeado puede que no. Lo probamos
+   una sola vez y ajustamos el mensaje, en vez de alertar en cada guardado. */
+const HAY_STORAGE = (() => {
+  try { localStorage.setItem("victoria:test", "1"); localStorage.removeItem("victoria:test"); return true; }
+  catch(e){ return false; }
+})();
+let avisoEspacio = false;
+
+function guardarBorrador(){
+  D.savedAt = new Date().toISOString();
+  hayBorrador = true;
+  if(HAY_STORAGE){
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(D)); }
+    catch(e){
+      // Acá sí es falta de espacio: las fotos en base64 llenaron la cuota.
+      if(!avisoEspacio){
+        avisoEspacio = true;
+        alert("El navegador se quedó sin espacio para guardar el borrador.\n\nBajá el datos.json ahora desde la pestaña Publicar para no perder el trabajo, y usá menos fotos por prenda.");
+      }
+    }
+  }
+  pintarFlag();
+}
+
+/* ==============================================================
+   PÁGINA PÚBLICA
+   ============================================================== */
+function renderFeria(){
+  const card = $("feriaCard"), f = D.config.feria;
+  const ok = f && f.fecha && !isNaN(new Date(f.fecha));
+  if(!ok){ card.hidden = true; $("heroGrid").classList.add("solo"); return; }
+
+  const t = new Date(f.fecha), ms = t - Date.now();
+  if(ms < -12*3600*1000){ card.hidden = true; $("heroGrid").classList.add("solo"); return; }
+
+  card.hidden = false; $("heroGrid").classList.remove("solo");
+  $("feriaWhen").textContent = t.toLocaleDateString("es-AR", {weekday:"long", day:"numeric", month:"long"});
+  const dias = Math.ceil(ms/86400000);
+  $("feriaCount").textContent = ms <= 0 ? "Es hoy — te esperamos" : dias === 1 ? "Falta 1 día" : `Faltan ${dias} días`;
+
+  const filas = [["Horario", "Desde las " + t.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hour12:false})],
+                 ["Lugar", f.lugar || D.config.direccion]];
+  if(f.nota) filas.push(["Nota", f.nota]);
+  $("feriaRows").innerHTML = filas.map(([k,v]) => `<div class="feria-row"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+}
+
+function tarjeta(p){
+  const vendida = p.venta === "vendida", reservada = p.venta === "reservada";
+  const fav = favoritas.includes(p.ref), nivel = ESTADOS[p.estado] || 2;
+  const foto = p.fotos && p.fotos.length ? p.fotos[0] : null;
+  const cuadros = [1,2,3,4].map(n => `<i class="${n <= nivel ? "on" : ""}"></i>`).join("");
+  const sello = vendida ? "" : reservada ? `<span class="badge badge--hold">Reservada</span>` : p.nueva ? `<span class="badge">Recién llegada</span>` : "";
+
+  return `
+  <article class="card" data-venta="${esc(p.venta)}">
+    <div class="card-photo">
+      ${foto ? `<img src="${esc(foto)}" alt="${esc(p.nombre)}, talle ${esc(p.talle)}" loading="lazy">`
+             : `<div class="photo-empty"><span>${esc(p.categoria)}</span><span>Foto en camino</span></div>`}
+      ${sello}
+      ${vendida ? `<div class="sold-veil"><span>Vendida</span></div>` : ""}
+      <button class="fav-btn" data-fav="${esc(p.ref)}" aria-pressed="${fav}" aria-label="${fav ? "Quitar" : "Guardar"} ${esc(p.nombre)} en mis favoritas">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13Z"></path></svg>
+      </button>
+    </div>
+    <div class="card-tape"><span>${esc(p.categoria)}</span><span class="ref">${esc(p.ref)}</span></div>
+    <div class="card-body">
+      <h3 class="card-name">${esc(p.nombre)}</h3>
+      ${p.desc ? `<p class="card-desc">${esc(p.desc)}</p>` : ""}
+      <div class="card-specs">
+        <span>Talle ${esc(p.talle)}</span>
+        <span class="wear" aria-label="Estado: ${esc(p.estado)}" title="Estado: ${esc(p.estado)}">${cuadros}</span>
+      </div>
+      <div class="card-foot">
+        <span class="price">${money(p.precio)}</span>
+        <div class="card-actions">
+          <button class="icon-btn" data-share="${esc(p.ref)}" aria-label="Compartir ${esc(p.nombre)}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"></path><path d="M16 6l-4-4-4 4"></path><path d="M12 2v14"></path></svg>
+          </button>
+          ${vendida ? `<button class="buy-btn" disabled>Vendida</button>`
+                    : `<button class="buy-btn" data-buy="${esc(p.ref)}">${ICON_WA} ${reservada ? "Consultar" : "La quiero"}</button>`}
+        </div>
+      </div>
+    </div>
+    ${esAdmin ? `<div class="card-admin">
+      <button data-edit="${esc(p.ref)}">Editar</button>
+      <button class="del" data-borrar="${esc(p.ref)}">Borrar</button>
+    </div>` : ""}
+  </article>`;
+}
+
+let filtro = "Todas", soloFav = false;
+
+function render(){
+  const q = $("q").value.trim().toLowerCase(), orden = $("orden").value;
+
+  let lista = D.prendas.filter(p => {
+    if(filtro !== "Todas" && p.categoria !== filtro) return false;
+    if(soloFav && !favoritas.includes(p.ref)) return false;
+    if(q && !`${p.nombre} ${p.categoria} ${p.desc||""} ${p.talle} ${p.ref}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  lista.sort((a,b) => {
+    const av = a.venta === "vendida" ? 1 : 0, bv = b.venta === "vendida" ? 1 : 0;
+    if(av !== bv) return av - bv;
+    if(orden === "precio-asc")  return a.precio - b.precio;
+    if(orden === "precio-desc") return b.precio - a.precio;
+    return D.prendas.indexOf(a) - D.prendas.indexOf(b);
+  });
+
+  $("grid").innerHTML = lista.length
+    ? lista.map(tarjeta).join("")
+    : `<div class="empty-state"><strong>${D.prendas.length ? "No encontramos nada con eso" : "Todavía no hay prendas cargadas"}</strong>
+       <p>${soloFav ? "Todavía no guardaste ninguna favorita. Tocá el corazón en las que te gusten."
+            : D.prendas.length ? "Probá con otra palabra o sacá los filtros." : "Volvé a pasar en un rato, se suman seguido."}</p></div>`;
+
+  const disp = lista.filter(p => p.venta !== "vendida").length, vend = lista.length - disp;
+  $("countLine").textContent =
+    `${disp} ${disp === 1 ? "prenda disponible" : "prendas disponibles"}` +
+    (vend ? ` · ${vend} ya vendida${vend === 1 ? "" : "s"}` : "") +
+    (favoritas.length ? ` · ${favoritas.length} guardada${favoritas.length === 1 ? "" : "s"}` : "");
+
+  const cats = ["Todas", ...new Set(D.prendas.map(p => p.categoria))];
+  $("chips").innerHTML =
+    cats.map(c => `<button class="chip" data-cat="${esc(c)}" aria-pressed="${filtro===c}">${esc(c)}</button>`).join("") +
+    `<button class="chip" id="chipFav" aria-pressed="${soloFav}">♥ Mis favoritas${favoritas.length ? ` (${favoritas.length})` : ""}</button>`;
+
+  const n = favoritas.filter(r => { const p = D.prendas.find(x => x.ref === r); return p && p.venta !== "vendida"; }).length;
+  const bar = $("barWa");
+  bar.href = waLink(mensajeGeneral());
+  bar.lastChild.textContent = n ? ` Consultar por ${n}` : " Escribirme";
+}
+
+function mensajeGeneral(){
+  const el = D.prendas.filter(p => favoritas.includes(p.ref) && p.venta !== "vendida");
+  if(!el.length) return "¡Hola Victoria! Estuve viendo la página y quería consultarte.";
+  return "¡Hola Victoria! Me gustaron estas prendas de la página:\n\n" +
+    el.map(p => `• ${p.nombre} (${p.ref}) — talle ${p.talle} — ${money(p.precio)}`).join("\n") +
+    "\n\n¿Siguen disponibles?";
+}
+
+function renderResenas(){
+  const sec = $("resenas");
+  if(!D.resenas.length){ sec.hidden = true; return; }
+  sec.hidden = false;
+  const prom = D.resenas.reduce((a,r) => a + Number(r.estrellas || 0), 0) / D.resenas.length;
+  const rd = Math.round(prom);
+  $("revAvg").textContent = prom.toFixed(1).replace(".", ",");
+  $("revStars").textContent = "★".repeat(rd) + "☆".repeat(5-rd);
+  $("revCount").textContent = `${D.resenas.length} ${D.resenas.length === 1 ? "reseña" : "reseñas"}`;
+  $("revGrid").innerHTML = D.resenas.map(r => {
+    const d = new Date((r.fecha || "") + "T12:00");
+    return `<figure class="rev">
+      <div class="stars" aria-label="${esc(r.estrellas)} de 5 estrellas">${"★".repeat(r.estrellas)}${"☆".repeat(5-r.estrellas)}</div>
+      <blockquote class="rev-q">${esc(r.texto)}</blockquote>
+      <figcaption class="rev-by"><span class="rev-name">${esc(r.nombre)}</span>
+      <span class="rev-date">${isNaN(d) ? "" : esc(d.toLocaleDateString("es-AR",{month:"long",year:"numeric"}))}</span></figcaption>
+    </figure>`;
+  }).join("");
+}
+
+function renderInfo(){
+  const c = D.config;
+  const ul = (a) => `<ul>${lineas(a).map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+  $("infoGrid").innerHTML = [
+    ["Dónde estamos", `<p>${esc(c.direccion)}</p>${c.comoLlegar ? `<p style="margin-top:10px;"><a href="${esc(c.comoLlegar)}" target="_blank" rel="noopener">Cómo llegar →</a></p>` : ""}`],
+    ["Cuándo", ul(c.horarios)],
+    ["Cómo se paga", ul(c.pagos)],
+    ["Cómo te llega", ul(c.envios)]
+  ].map(([t,x]) => `<div class="info-block"><h3>${esc(t)}</h3>${x}</div>`).join("");
+}
+
+function renderFaq(){
+  $("faqList").innerHTML = D.faqs.map((f,i) => `
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false" aria-controls="faq-a-${i}">
+        <span>${esc(f.q)}</span>
+        <svg class="caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <div class="faq-a" id="faq-a-${i}" role="region"><div><p>${esc(f.a)}</p></div></div>
+    </div>`).join("");
+}
+
+function renderFooter(){
+  const c = D.config;
+  $("footNote").textContent = `Feria de moda circular en ${(c.direccion.split(",").pop() || "").trim() || "Mar del Plata"}. Reutilizar alarga la vida de la ropa y saca presión a la industria más contaminante después del petróleo.`;
+  $("footLinks").innerHTML = `
+    <a href="${waLink("¡Hola Victoria! Te escribo desde la página.")}" target="_blank" rel="noopener">${ICON_WA} WhatsApp</a>
+    ${c.instagram ? `<a href="https://instagram.com/${esc(c.instagram)}" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"></circle></svg>
+      @${esc(c.instagram)}</a>` : ""}
+    ${c.comoLlegar ? `<a href="${esc(c.comoLlegar)}" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.6"></circle></svg>
+      Cómo llegar</a>` : ""}`;
+  const b = $("btnConsigna");
+  b.href = waLink("¡Hola Victoria! Tengo ropa que ya no uso y me gustaría dejártela en consignación. ¿Cómo hacemos?");
+  b.target = "_blank"; b.rel = "noopener";
+}
+
+function renderTodo(){ renderFeria(); render(); renderResenas(); renderInfo(); renderFaq(); renderFooter(); }
+
+/* ==============================================================
+   ACCIONES PÚBLICAS
+   ============================================================== */
+function comprar(ref){
+  const p = D.prendas.find(x => x.ref === ref);
+  if(!p || p.venta === "vendida") return;
+  const cola = p.venta === "reservada" ? "está reservada, pero quería saber si se libera" : "y la quiero";
+  window.open(waLink(`¡Hola Victoria! Vi "${p.nombre}" (${p.ref}) a ${money(p.precio)}, talle ${p.talle}, ${cola}. ¿Sigue disponible?`), "_blank", "noopener");
+}
+function compartir(ref){
+  const p = D.prendas.find(x => x.ref === ref);
+  if(!p) return;
+  const texto = `Mirá esta prenda en Victoria Moda Circular: "${p.nombre}", talle ${p.talle}, ${money(p.precio)}.`;
+  const url = location.href.split("#")[0];
+  if(navigator.share) navigator.share({title:p.nombre, text:texto, url}).catch(()=>{});
+  else window.open(`https://wa.me/?text=${encodeURIComponent(texto + " " + url)}`, "_blank", "noopener");
+}
+function toggleFav(ref){
+  const i = favoritas.indexOf(ref);
+  if(i === -1) favoritas.push(ref); else favoritas.splice(i,1);
+  guardarFavoritas(); render();
+}
+
+/* ==============================================================
+   PANEL DE ORGANIZADORA
+   ============================================================== */
+function pintarFlag(){
+  const f = $("adminFlag");
+  f.hidden = !esAdmin;
+  $("adminFlagTxt").textContent =
+    !HAY_STORAGE ? "Modo organizadora — ojo: este navegador no guarda borradores, descargá el datos.json antes de cerrar"
+    : hayBorrador ? "Modo organizadora — tenés cambios sin publicar"
+    : "Modo organizadora";
+  $("btnAdmin").textContent = esAdmin ? "Salir del modo organizadora" : "Soy la organizadora";
+}
+
+function abrirPanel(){ $("panel").hidden = false; pintarPanel(); }
+function cerrarPanel(){ $("panel").hidden = true; editandoRef = null; }
+
+function nuevoRef(){
+  const nums = D.prendas.map(p => parseInt(String(p.ref).replace(/\D/g,""), 10)).filter(n => !isNaN(n));
+  return "V-" + (Math.max(100, ...nums) + 1);
+}
+
+function pintarPanel(){
+  document.querySelectorAll(".panel-tabs button").forEach(b =>
+    b.setAttribute("aria-selected", String(b.dataset.tab === tabActiva)));
+  const body = $("panelBody"), acc = $("panelActions");
+  acc.innerHTML = "";
+
+  if(tabActiva === "prendas")  return editandoRef !== null ? formPrenda(body, acc) : listaPrendas(body, acc);
+  if(tabActiva === "info")     return formInfo(body, acc);
+  if(tabActiva === "resenas")  return listaResenas(body, acc);
+  if(tabActiva === "faqs")     return listaFaqs(body, acc);
+  if(tabActiva === "publicar") return tabPublicar(body, acc);
+}
+
+/* ---------- prendas ---------- */
+function listaPrendas(body, acc){
+  body.innerHTML = `<div class="adm-list">${
+    D.prendas.length ? D.prendas.map(p => `
+      <div class="adm-row">
+        ${p.fotos && p.fotos.length ? `<img class="adm-thumb" src="${esc(p.fotos[0])}" alt="">` : `<div class="adm-thumb"></div>`}
+        <div class="txt"><b>${esc(p.nombre)}</b><span>${esc(p.ref)} · ${esc(p.categoria)} · ${money(p.precio)} · ${esc(p.venta)}</span></div>
+        <button data-pedit="${esc(p.ref)}">Editar</button>
+        <button class="del" data-pdel="${esc(p.ref)}" aria-label="Borrar ${esc(p.nombre)}">✕</button>
+      </div>`).join("")
+    : `<p class="nota">Todavía no cargaste ninguna prenda. Tocá <strong>Nueva prenda</strong> para empezar.</p>`
+  }</div>`;
+  acc.innerHTML = `<button class="btn btn-solid" id="btnNueva">+ Nueva prenda</button>`;
+}
+
+function formPrenda(body, acc){
+  const nueva = editandoRef === "";
+  const p = nueva
+    ? { ref:nuevoRef(), nombre:"", categoria:"Camperas", talle:"", estado:"Muy bueno", precio:"", desc:"", fotos:[], venta:"disponible", nueva:true }
+    : D.prendas.find(x => x.ref === editandoRef);
+  if(!p){ editandoRef = null; return pintarPanel(); }
+  if(fotosTmp === null) fotosTmp = [];
+
+  body.innerHTML = `
+    <div class="fld"><label for="p-nombre">Nombre de la prenda</label>
+      <input id="p-nombre" value="${esc(p.nombre)}" placeholder="Campera de jean oversize"></div>
+    <div class="fld2">
+      <div class="fld"><label for="p-cat">Categoría</label>
+        <select id="p-cat">${CATEGORIAS.map(c => `<option ${c === p.categoria ? "selected" : ""}>${c}</option>`).join("")}</select></div>
+      <div class="fld"><label for="p-talle">Talle</label>
+        <input id="p-talle" value="${esc(p.talle)}" placeholder="M / 42 / Único"></div>
+    </div>
+    <div class="fld2">
+      <div class="fld"><label for="p-estado">Estado</label>
+        <select id="p-estado">${Object.keys(ESTADOS).map(e => `<option ${e === p.estado ? "selected" : ""}>${e}</option>`).join("")}</select></div>
+      <div class="fld"><label for="p-precio">Precio</label>
+        <input id="p-precio" type="number" inputmode="numeric" value="${esc(p.precio)}" placeholder="9000"></div>
+    </div>
+    <div class="fld"><label for="p-desc">Descripción corta</label>
+      <textarea id="p-desc" placeholder="Detalle, marca, algo que la haga única…">${esc(p.desc)}</textarea></div>
+    <div class="fld2">
+      <div class="fld"><label for="p-venta">Disponibilidad</label>
+        <select id="p-venta">
+          <option value="disponible" ${p.venta === "disponible" ? "selected":""}>Disponible</option>
+          <option value="reservada"  ${p.venta === "reservada"  ? "selected":""}>Reservada</option>
+          <option value="vendida"    ${p.venta === "vendida"    ? "selected":""}>Vendida</option>
+        </select></div>
+      <div class="fld"><label for="p-nueva">Sello “recién llegada”</label>
+        <select id="p-nueva"><option value="si" ${p.nueva ? "selected":""}>Sí</option><option value="no" ${!p.nueva ? "selected":""}>No</option></select></div>
+    </div>
+    <div class="fld">
+      <label>Fotos (hasta 3)</label>
+      <div class="fotos-grid" id="fotosGrid"></div>
+      <p class="hint">Se achican solas a 620 px para que la página cargue rápido. La primera es la que se ve en el catálogo.</p>
+    </div>
+    <p class="nota">Código de la prenda: <strong>${esc(p.ref)}</strong>. Es el que te llega en el mensaje de WhatsApp.</p>`;
+
+  fotosTmp = (p.fotos || []).slice();
+  pintarFotos();
+
+  acc.innerHTML = `
+    <button class="btn btn-ghost" id="btnCancelar">Cancelar</button>
+    <button class="btn btn-solid" id="btnGuardarPrenda" data-ref="${esc(p.ref)}" data-nueva="${nueva}">Guardar prenda</button>`;
+}
+
+function pintarFotos(){
+  const g = $("fotosGrid");
+  if(!g) return;
+  g.innerHTML = fotosTmp.map((src,i) =>
+    `<div class="foto-slot"><img src="${esc(src)}" alt=""><button type="button" data-fotodel="${i}" aria-label="Quitar foto ${i+1}">✕</button></div>`).join("")
+    + (fotosTmp.length < 3 ? `<div class="foto-add" id="fotoAdd" role="button" tabindex="0">+ Agregar<br>foto</div>` : "");
+}
+
+function achicar(file, max = 620){
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onerror = rej;
+    fr.onload = () => {
+      const img = new Image();
+      img.onerror = rej;
+      img.onload = () => {
+        let {width:w, height:h} = img;
+        if(w > h && w > max){ h = h*(max/w); w = max; }
+        else if(h > max){ w = w*(max/h); h = max; }
+        const cv = document.createElement("canvas");
+        cv.width = Math.round(w); cv.height = Math.round(h);
+        cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+        res(cv.toDataURL("image/jpeg", 0.72));
+      };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+/* ---------- info ---------- */
+function formInfo(body, acc){
+  const c = D.config, f = c.feria || {};
+  body.innerHTML = `
+    <div class="fld"><label for="c-wa">WhatsApp</label>
+      <input id="c-wa" value="${esc(c.whatsapp)}" inputmode="numeric">
+      <p class="hint">Con código de país y sin espacios ni signos. Argentina: 54 + 9 + característica sin el 0 + número sin el 15.</p></div>
+    <div class="fld"><label for="c-ig">Instagram</label>
+      <input id="c-ig" value="${esc(c.instagram)}" placeholder="victoria.modacircular">
+      <p class="hint">Sólo el usuario, sin la arroba.</p></div>
+    <div class="fld"><label for="c-dir">Dirección</label>
+      <input id="c-dir" value="${esc(c.direccion)}"></div>
+    <div class="fld"><label for="c-mapa">Link de Google Maps</label>
+      <input id="c-mapa" value="${esc(c.comoLlegar)}"></div>
+    <div class="fld"><label for="c-hor">Cuándo (una línea por renglón)</label>
+      <textarea id="c-hor">${esc(lineas(c.horarios).join("\n"))}</textarea></div>
+    <div class="fld"><label for="c-pag">Cómo se paga</label>
+      <textarea id="c-pag">${esc(lineas(c.pagos).join("\n"))}</textarea></div>
+    <div class="fld"><label for="c-env">Cómo te llega</label>
+      <textarea id="c-env">${esc(lineas(c.envios).join("\n"))}</textarea></div>
+    <hr style="border:none;border-top:1px solid var(--line);">
+    <div class="fld"><label for="c-fecha">Próxima feria (dejalo vacío si no hay)</label>
+      <input id="c-fecha" type="datetime-local" value="${esc(f.fecha || "")}">
+      <p class="hint">Si lo dejás vacío, la ficha de la feria no aparece en la página.</p></div>
+    <div class="fld2">
+      <div class="fld"><label for="c-lugar">Lugar</label><input id="c-lugar" value="${esc(f.lugar)}"></div>
+      <div class="fld"><label for="c-nota">Nota</label><input id="c-nota" value="${esc(f.nota)}" placeholder="Entrada libre"></div>
+    </div>`;
+  acc.innerHTML = `<button class="btn btn-solid" id="btnGuardarInfo">Guardar información</button>`;
+}
+
+/* ---------- reseñas ---------- */
+function listaResenas(body, acc){
+  body.innerHTML = `
+    <p class="nota">Estas reseñas las cargás vos a mano, copiando lo que te escriben por WhatsApp o Instagram. No hay formulario público a propósito: así nadie puede publicar spam ni insultos en tu página. <strong>Poné sólo cosas que te hayan dicho de verdad.</strong></p>
+    <div class="adm-list">${D.resenas.map((r,i) => `
+      <div class="adm-row">
+        <div class="txt"><b>${esc(r.nombre)} — ${"★".repeat(r.estrellas)}</b><span>${esc(String(r.texto).slice(0,70))}…</span></div>
+        <button class="del" data-rdel="${i}" aria-label="Borrar reseña de ${esc(r.nombre)}">✕</button>
+      </div>`).join("") || `<p class="nota">Todavía no cargaste ninguna reseña.</p>`}</div>
+    <hr style="border:none;border-top:1px solid var(--line);">
+    <div class="fld"><label for="r-nombre">Nombre</label><input id="r-nombre" placeholder="Malena R."></div>
+    <div class="fld2">
+      <div class="fld"><label for="r-est">Estrellas</label>
+        <select id="r-est">${[5,4,3,2,1].map(n => `<option value="${n}">${n}</option>`).join("")}</select></div>
+      <div class="fld"><label for="r-fecha">Fecha</label><input id="r-fecha" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+    </div>
+    <div class="fld"><label for="r-texto">Qué dijo</label><textarea id="r-texto"></textarea></div>`;
+  acc.innerHTML = `<button class="btn btn-solid" id="btnAddResena">Agregar reseña</button>`;
+}
+
+/* ---------- preguntas ---------- */
+function listaFaqs(body, acc){
+  body.innerHTML = `
+    <div class="adm-list">${D.faqs.map((f,i) => `
+      <div class="adm-row">
+        <div class="txt"><b>${esc(f.q)}</b><span>${esc(String(f.a).slice(0,70))}…</span></div>
+        <button class="del" data-fdel="${i}" aria-label="Borrar pregunta">✕</button>
+      </div>`).join("") || `<p class="nota">Todavía no cargaste ninguna pregunta.</p>`}</div>
+    <hr style="border:none;border-top:1px solid var(--line);">
+    <div class="fld"><label for="f-q">Pregunta</label><input id="f-q" placeholder="¿Hacen envíos?"></div>
+    <div class="fld"><label for="f-a">Respuesta</label><textarea id="f-a"></textarea></div>`;
+  acc.innerHTML = `<button class="btn btn-solid" id="btnAddFaq">Agregar pregunta</button>`;
+}
+
+/* ---------- publicar ---------- */
+function tabPublicar(body, acc){
+  const json = JSON.stringify(datosLimpios(), null, 2);
+  const kb = Math.round(json.length / 1024);
+  const alto = kb > 3000;
+  body.innerHTML = `
+    <p class="nota">Los cambios que hacés acá se guardan <strong>en este navegador</strong>. Para que los vean tus clientas hay que subir el archivo actualizado:</p>
+    <ol style="padding-left:20px;display:grid;gap:8px;color:var(--muted);font-size:14.5px;line-height:1.5;">
+      <li>Tocá <strong>Descargar datos.json</strong>.</li>
+      <li>Subí ese archivo a tu hosting, al lado de <code>index.html</code>, reemplazando el que estaba.</li>
+      <li>Listo: la página ya muestra los cambios para todo el mundo.</li>
+    </ol>
+    <div class="fld"><label>Peso del catálogo</label>
+      <p class="peso ${alto ? "alto" : ""}">${kb} KB${alto ? " — está pesado, sacá o achicá fotos" : " — bien"}</p>
+      <p class="hint">Casi todo el peso son las fotos. Por debajo de 3000 KB la página abre rápido en celular.</p></div>
+    <div class="fld"><label for="jsonOut">O copiá el contenido a mano</label>
+      <textarea id="jsonOut" readonly style="min-height:140px;font-family:ui-monospace,monospace;font-size:12px;">${esc(json)}</textarea></div>`;
+  acc.innerHTML = `
+    <button class="btn btn-ghost" id="btnDescartar">Descartar cambios</button>
+    <button class="btn btn-solid" id="btnDescargar">Descargar datos.json</button>`;
+}
+
+function datosLimpios(){
+  const c = D.config;
+  return {
+    build: new Date().toISOString(),
+    config: {
+      whatsapp:c.whatsapp, instagram:c.instagram, direccion:c.direccion, comoLlegar:c.comoLlegar,
+      horarios:lineas(c.horarios), pagos:lineas(c.pagos), envios:lineas(c.envios),
+      feria:{ fecha:c.feria.fecha || null, lugar:c.feria.lugar || "", nota:c.feria.nota || "" }
+    },
+    prendas: D.prendas, resenas: D.resenas, faqs: D.faqs
+  };
+}
+
+async function descargarJson(){
+  const datos = datosLimpios();
+  const texto = JSON.stringify(datos, null, 2);
+  // En un artifact publicado los <a download> están bloqueados: hay que
+  // pedirle al visor que guarde el archivo.
+  try {
+    const dl = window.claude && window.claude.use ? await window.claude.use("downloads") : null;
+    if(dl){ await dl.save({ filename:"datos.json", data:texto }); marcarPublicado(datos); return; }
+  } catch(e){ /* el visor puede rechazar: caemos al método común */ }
+  try {
+    const url = URL.createObjectURL(new Blob([texto], {type:"application/json"}));
+    const a = document.createElement("a");
+    a.href = url; a.download = "datos.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    marcarPublicado(datos);
+  } catch(e){
+    alert("No se pudo descargar acá. Copiá el texto del recuadro y pegalo en un archivo llamado datos.json.");
+  }
+}
+
+function marcarPublicado(datos){
+  // El borrador local ya no es "más nuevo" que lo publicado.
+  D.build = datos.build;
+  hayBorrador = false;
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
+  pintarFlag();
+}
+
+/* ==============================================================
+   EVENTOS
+   ============================================================== */
+document.addEventListener("click", async (e) => {
+  const t = e.target;
+  const hit = (sel) => t.closest(sel);
+
+  /* --- público --- */
+  const buy = hit("[data-buy]");     if(buy)   return comprar(buy.dataset.buy);
+  const shr = hit("[data-share]");   if(shr)   return compartir(shr.dataset.share);
+  const fav = hit("[data-fav]");     if(fav)   return toggleFav(fav.dataset.fav);
+  if(hit("#chipFav")){ soloFav = !soloFav; return render(); }
+  const cat = hit("[data-cat]");     if(cat){ filtro = cat.dataset.cat; soloFav = false; return render(); }
+  const faq = hit(".faq-q");
+  if(faq) return faq.setAttribute("aria-expanded", String(faq.getAttribute("aria-expanded") !== "true"));
+
+  /* --- entrar / salir del modo organizadora --- */
+  if(hit("#btnAdmin")){
+    esAdmin = !esAdmin;
+    pintarFlag(); render();
+    if(esAdmin) abrirPanel(); else cerrarPanel();
+    return;
+  }
+  if(hit("#abrirPanel")) return abrirPanel();
+  if(hit("#cerrarPanel")) return cerrarPanel();
+  if(t.id === "panel") return cerrarPanel();
+
+  const tab = hit(".panel-tabs button");
+  if(tab){ tabActiva = tab.dataset.tab; editandoRef = null; return pintarPanel(); }
+
+  /* --- prendas desde la tarjeta --- */
+  const ce = hit("[data-edit]");
+  if(ce){ tabActiva = "prendas"; editandoRef = ce.dataset.edit; $("panel").hidden = false; return pintarPanel(); }
+  const cb = hit("[data-borrar]");
+  if(cb){
+    const p = D.prendas.find(x => x.ref === cb.dataset.borrar);
+    if(p && confirm(`¿Borrar "${p.nombre}"?\n\nSi ya se vendió, conviene marcarla como Vendida en vez de borrarla.`)){
+      D.prendas = D.prendas.filter(x => x.ref !== p.ref); guardarBorrador(); renderTodo();
+    }
+    return;
+  }
+
+  /* --- panel: prendas --- */
+  if(hit("#btnNueva")){ editandoRef = ""; fotosTmp = []; return pintarPanel(); }
+  const pe = hit("[data-pedit]"); if(pe){ editandoRef = pe.dataset.pedit; return pintarPanel(); }
+  const pd = hit("[data-pdel]");
+  if(pd){
+    const p = D.prendas.find(x => x.ref === pd.dataset.pdel);
+    if(p && confirm(`¿Borrar "${p.nombre}"?`)){ D.prendas = D.prendas.filter(x => x.ref !== p.ref); guardarBorrador(); renderTodo(); pintarPanel(); }
+    return;
+  }
+  if(hit("#btnCancelar")){ editandoRef = null; fotosTmp = []; return pintarPanel(); }
+
+  const gp = hit("#btnGuardarPrenda");
+  if(gp){
+    const nombre = $("p-nombre").value.trim(), precio = $("p-precio").value;
+    if(!nombre || precio === ""){ alert("Falta el nombre o el precio."); return; }
+    const datos = {
+      ref: gp.dataset.ref, nombre,
+      categoria: $("p-cat").value, talle: $("p-talle").value.trim() || "Único",
+      estado: $("p-estado").value, precio: Number(precio),
+      desc: $("p-desc").value.trim(), fotos: fotosTmp.slice(),
+      venta: $("p-venta").value, nueva: $("p-nueva").value === "si"
+    };
+    if(gp.dataset.nueva === "true") D.prendas.unshift(datos);
+    else D.prendas = D.prendas.map(x => x.ref === datos.ref ? datos : x);
+    guardarBorrador(); editandoRef = null; fotosTmp = [];
+    renderTodo(); return pintarPanel();
+  }
+
+  const fd = hit("[data-fotodel]");
+  if(fd){ fotosTmp.splice(Number(fd.dataset.fotodel), 1); return pintarFotos(); }
+  if(hit("#fotoAdd")) return $("fotoInput").click();
+
+  /* --- panel: info --- */
+  if(hit("#btnGuardarInfo")){
+    D.config.whatsapp  = $("c-wa").value.replace(/\D/g, "");
+    D.config.instagram = $("c-ig").value.trim().replace(/^@/, "");
+    D.config.direccion = $("c-dir").value.trim();
+    D.config.comoLlegar= $("c-mapa").value.trim();
+    D.config.horarios  = lineas($("c-hor").value);
+    D.config.pagos     = lineas($("c-pag").value);
+    D.config.envios    = lineas($("c-env").value);
+    D.config.feria     = { fecha: $("c-fecha").value || null, lugar: $("c-lugar").value.trim(), nota: $("c-nota").value.trim() };
+    guardarBorrador(); renderTodo();
+    alert("Información guardada en el borrador. Acordate de publicar desde la pestaña Publicar.");
+    return;
+  }
+
+  /* --- panel: reseñas --- */
+  if(hit("#btnAddResena")){
+    const nombre = $("r-nombre").value.trim(), texto = $("r-texto").value.trim();
+    if(!nombre || !texto){ alert("Falta el nombre o el texto."); return; }
+    D.resenas.unshift({ nombre, texto, estrellas:Number($("r-est").value), fecha:$("r-fecha").value });
+    guardarBorrador(); renderTodo(); return pintarPanel();
+  }
+  const rd = hit("[data-rdel]");
+  if(rd){ D.resenas.splice(Number(rd.dataset.rdel), 1); guardarBorrador(); renderTodo(); return pintarPanel(); }
+
+  /* --- panel: preguntas --- */
+  if(hit("#btnAddFaq")){
+    const q = $("f-q").value.trim(), a = $("f-a").value.trim();
+    if(!q || !a){ alert("Falta la pregunta o la respuesta."); return; }
+    D.faqs.push({ q, a });
+    guardarBorrador(); renderTodo(); return pintarPanel();
+  }
+  const fdel = hit("[data-fdel]");
+  if(fdel){ D.faqs.splice(Number(fdel.dataset.fdel), 1); guardarBorrador(); renderTodo(); return pintarPanel(); }
+
+  /* --- panel: publicar --- */
+  if(hit("#btnDescargar")) return descargarJson();
+  if(hit("#btnDescartar")){
+    if(!confirm("¿Descartar todos los cambios sin publicar y volver a lo que está online?")) return;
+    try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
+    location.reload(); return;
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && !$("panel").hidden) cerrarPanel();
+  if(e.key === "Enter" && e.target.classList && e.target.classList.contains("foto-add")) $("fotoInput").click();
+});
+
+$("fotoInput").addEventListener("change", async (e) => {
+  const files = Array.from(e.target.files).slice(0, 3 - fotosTmp.length);
+  for(const f of files){
+    try { fotosTmp.push(await achicar(f)); }
+    catch(err){ alert("No se pudo leer una de las fotos."); }
+  }
+  pintarFotos();
+  e.target.value = "";
+});
+
+/* ==============================================================
+   TEMA
+   ============================================================== */
+(function(){
+  let g = null;
+  try { g = localStorage.getItem(TEMA_KEY); } catch(e){}
+  if(g) document.documentElement.setAttribute("data-theme", g);
+  $("themeToggle").addEventListener("click", () => {
+    const oscuro = document.documentElement.getAttribute("data-theme") === "dark"
+      || (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const nuevo = oscuro ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", nuevo);
+    try { localStorage.setItem(TEMA_KEY, nuevo); } catch(e){}
+  });
+})();
+
+/* ==============================================================
+   ARRANQUE
+   ============================================================== */
+$("q").addEventListener("input", () => render());
+$("orden").addEventListener("change", () => render());
+
+cargarDatos().then(() => { pintarFlag(); renderTodo(); });
+</script>
+
+</body>
+</html>

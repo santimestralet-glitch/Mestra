@@ -1,0 +1,164 @@
+{
+  "build": "2026-08-23T00:57:34.286Z",
+  "config": {
+    "whatsapp": "5492235813019",
+    "instagram": "victoria.modacircular",
+    "direccion": "San Juan 319, Mar del Plata",
+    "comoLlegar": "https://maps.google.com/?q=San+Juan+319+Mar+del+Plata",
+    "horarios": [
+      "Jueves de 15 a 20",
+      "Sábados de 11 a 18"
+    ],
+    "pagos": [
+      "Lo coordinamos por WhatsApp: te paso las formas de pago disponibles cuando reservás"
+    ],
+    "envios": [
+      "Lo coordinamos por WhatsApp: según dónde estés vemos entrega en mano o envío"
+    ],
+    "feria": {
+      "fecha": "2026-09-20T16:00",
+      "lugar": "San Juan 319",
+      "nota": ""
+    }
+  },
+  "prendas": [
+    {
+      "ref": "V-101",
+      "nombre": "Campera de jean oversize",
+      "categoria": "Camperas",
+      "talle": "M",
+      "estado": "Muy bueno",
+      "precio": 9000,
+      "desc": "Lavado claro, corte ancho. Ideal entretiempo.",
+      "fotos": [],
+      "venta": "disponible",
+      "nueva": true
+    },
+    {
+      "ref": "V-102",
+      "nombre": "Vestido de lino crudo",
+      "categoria": "Vestidos",
+      "talle": "S",
+      "estado": "Como nuevo",
+      "precio": 12000,
+      "desc": "Tela liviana, usado una sola vez. Largo midi.",
+      "fotos": [],
+      "venta": "disponible",
+      "nueva": true
+    },
+    {
+      "ref": "V-103",
+      "nombre": "Botas texanas de cuero",
+      "categoria": "Calzado",
+      "talle": "38",
+      "estado": "Bueno",
+      "precio": 15000,
+      "desc": "Cuero genuino. Algo de uso en la suela, nada roto.",
+      "fotos": [],
+      "venta": "disponible",
+      "nueva": false
+    },
+    {
+      "ref": "V-104",
+      "nombre": "Tapado de paño gris",
+      "categoria": "Abrigos",
+      "talle": "L",
+      "estado": "Muy bueno",
+      "precio": 18000,
+      "desc": "Corte recto, forrado. Un clásico que no falla.",
+      "fotos": [],
+      "venta": "disponible",
+      "nueva": false
+    },
+    {
+      "ref": "V-105",
+      "nombre": "Camisa de seda estampada",
+      "categoria": "Camisas",
+      "talle": "M",
+      "estado": "Como nuevo",
+      "precio": 7500,
+      "desc": "Estampa floral chica, caída divina.",
+      "fotos": [],
+      "venta": "reservada",
+      "nueva": false
+    },
+    {
+      "ref": "V-106",
+      "nombre": "Pantalón sastrero negro",
+      "categoria": "Pantalones",
+      "talle": "40",
+      "estado": "Muy bueno",
+      "precio": 8500,
+      "desc": "Tiro alto, pierna ancha. Con pinzas.",
+      "fotos": [],
+      "venta": "disponible",
+      "nueva": false
+    },
+    {
+      "ref": "V-107",
+      "nombre": "Sweater de lana trenzado",
+      "categoria": "Sweaters",
+      "talle": "Único",
+      "estado": "Bueno",
+      "precio": 6500,
+      "desc": "Lana gruesa color crudo. Un pelotita en la manga.",
+      "fotos": [],
+      "venta": "disponible",
+      "nueva": true
+    },
+    {
+      "ref": "V-108",
+      "nombre": "Falda plisada midi",
+      "categoria": "Faldas",
+      "talle": "S",
+      "estado": "Como nuevo",
+      "precio": 7000,
+      "desc": "Verde botella, plisado impecable.",
+      "fotos": [],
+      "venta": "disponible",
+      "nueva": false
+    }
+  ],
+  "resenas": [
+    {
+      "nombre": "Ana P.",
+      "texto": "Muy buena atención, volvería.",
+      "estrellas": 4,
+      "fecha": "2026-08-23"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo probarme la ropa antes de comprar?",
+      "a": "Sí. Coordinamos por WhatsApp y te la probás con tiempo. Si comprás a distancia, decime tu talle habitual y te paso las medidas exactas de la prenda antes de que decidas."
+    },
+    {
+      "q": "¿Cómo reservo una prenda?",
+      "a": "Tocás el botón verde de la prenda que te gusta. Se abre WhatsApp con el mensaje ya escrito y el código incluido. Te confirmo si sigue disponible y te la reservo."
+    },
+    {
+      "q": "¿Cómo se paga?",
+      "a": "Lo arreglamos por WhatsApp cuando reservás. Te paso las formas de pago disponibles en ese momento."
+    },
+    {
+      "q": "¿Hacen envíos?",
+      "a": "Sí, lo vemos por WhatsApp según dónde estés. Puede ser entrega en mano o envío, y ahí te paso el costo."
+    },
+    {
+      "q": "¿Puedo devolver o cambiar algo?",
+      "a": "Si compraste a distancia y la prenda no era como la describí, te devuelvo la plata. Si simplemente no te gustó cómo te queda, escribime y lo resolvemos."
+    },
+    {
+      "q": "¿Aceptan ropa en consignación?",
+      "a": "Sí. Me acercás las prendas, elijo las que entran y arreglamos el porcentaje. Cuando se venden, te paso tu parte. Escribime por WhatsApp y coordinamos."
+    },
+    {
+      "q": "¿Cómo sé que la ropa está en buen estado?",
+      "a": "Cada prenda tiene su estado con los cuadraditos: cuatro es «como nuevo» y uno es «con detalles». Si dice «con detalles», en la descripción explico exactamente cuál es."
+    },
+    {
+      "q": "¿Prueba?",
+      "a": "Sí."
+    }
+  ]
+}
