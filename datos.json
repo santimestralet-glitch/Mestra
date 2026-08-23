@@ -19,6 +19,10 @@
       "fecha": null,
       "lugar": "",
       "nota": ""
+    },
+    "clave": {
+      "sal": "bbd2cdf63caf253b",
+      "hash": "2f49e842afa89857c1f7ad31aae2d88a9b491bff4053f5d581748798b0ceae85"
     }
   },
   "prendas": [
