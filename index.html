@@ -408,6 +408,24 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .clave-acc{display:flex;gap:10px;margin-top:18px;}
 .clave-acc .btn{flex:1;min-width:0;padding:12px 14px;}
 .clave-caja .fld + .fld{margin-top:12px;}
+
+/* Desenfoque de entrada. La idea no es "animar la web": es que cada bloque
+   entre fuera de foco y el navegador lo enfoque al llegar, como una camara
+   buscando el sujeto. Rima con el rubro y dura poco.
+   El estado inicial vive detras de la clase .foco, que la pone el JS: si el
+   script no corre, no queda nada invisible esperando a nadie. */
+@media (prefers-reduced-motion: no-preference){
+  .foco{
+    opacity:0;
+    filter:blur(9px);
+    transform:translateY(16px);
+    transition:opacity .6s ease,
+               filter .6s ease,
+               transform .6s cubic-bezier(.16,.84,.3,1);
+    transition-delay:var(--foco-espera, 0ms);
+  }
+  .foco.enfocado{opacity:1;filter:blur(0);transform:none;}
+}
 </style>
 <!-- Ficha de negocio local para Google: dirección, horarios y contacto en el
      formato que entiende el buscador. Ayuda a aparecer en "ropa usada mar del
@@ -1094,6 +1112,34 @@ function renderFooter(){
   const b = $("btnConsigna");
   b.href = waLink("¡Hola Victoria! Tengo ropa que ya no uso y quiero renovar. ¿Me contás cómo funciona la compra directa y el crédito a cuenta?");
   b.target = "_blank"; b.rel = "noopener";
+}
+
+
+/* Marca los bloques que entran fuera de foco y los enfoca cuando aparecen.
+   Se llama una sola vez, al arrancar: si se llamara en cada render, filtrar
+   el catalogo volveria a desenfocar las tarjetas y filtrar tiene que ser
+   instantaneo. */
+const SEL_FOCO = ".hero-grid > *, .section-head, .step, .band-inner > *," +
+                 " .grid > .card, .local-strip figure, #faqList > *, .info-grid > *";
+
+function enfocar(){
+  if(!("IntersectionObserver" in window)) return;
+  try { if(!matchMedia("(prefers-reduced-motion: no-preference)").matches) return; } catch(e){ return; }
+
+  const obs = new IntersectionObserver((entradas, o) => {
+    entradas.filter(e => e.isIntersecting).forEach((e, i) => {
+      /* Escalonado corto y con techo: en una grilla de 11 prendas, una cascada
+         completa se haria eterna y el catalogo es lo que la gente vino a ver. */
+      e.target.style.setProperty("--foco-espera", Math.min(i, 3) * 70 + "ms");
+      e.target.classList.add("enfocado");
+      o.unobserve(e.target);
+    });
+  }, { threshold:.08, rootMargin:"0px 0px -8% 0px" });
+
+  document.querySelectorAll(SEL_FOCO).forEach(el => {
+    el.classList.add("foco");
+    obs.observe(el);
+  });
 }
 
 function renderTodo(){ renderTag(); renderFeria(); render(); renderResenas(); renderInfo(); renderFaq(); renderFooter(); }
@@ -1804,7 +1850,7 @@ cargarDatos().then(() => {
      Al cerrar la pestaña se pierde, así que en una compu prestada no
      queda nadie adentro. */
   try { if(sessionStorage.getItem(SESION_KEY) === "1") esAdmin = true; } catch(e){}
-  pintarFlag(); renderTodo();
+  pintarFlag(); renderTodo(); enfocar();
 });
 </script>
 
