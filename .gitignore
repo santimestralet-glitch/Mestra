@@ -1,6 +1,11 @@
 # Vercel
 .vercel
 
+# Descargas a medio bajar del panel de organizadora
+*.crdownload
+*.part
+*.download
+
 # Sistema
 Thumbs.db
 desktop.ini
