@@ -1,5 +1,5 @@
 {
-  "build": "2026-08-23T00:57:34.286Z",
+  "build": "2026-08-23T02:10:00.000Z",
   "config": {
     "whatsapp": "5492235813019",
     "instagram": "victoria.modacircular",
@@ -16,8 +16,8 @@
       "Lo coordinamos por WhatsApp: según dónde estés vemos entrega en mano o envío"
     ],
     "feria": {
-      "fecha": "2026-09-20T16:00",
-      "lugar": "San Juan 319",
+      "fecha": null,
+      "lugar": "",
       "nota": ""
     }
   },
@@ -119,14 +119,7 @@
       "nueva": false
     }
   ],
-  "resenas": [
-    {
-      "nombre": "Ana P.",
-      "texto": "Muy buena atención, volvería.",
-      "estrellas": 4,
-      "fecha": "2026-08-23"
-    }
-  ],
+  "resenas": [],
   "faqs": [
     {
       "q": "¿Puedo probarme la ropa antes de comprar?",
