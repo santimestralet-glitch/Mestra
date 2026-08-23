@@ -316,6 +316,15 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .nota strong{color:var(--ink);}
 .peso{font-variant-numeric:tabular-nums;font-weight:600;}
 .peso.alto{color:var(--danger);}
+
+.clave{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:20px;background:color-mix(in srgb, var(--ink) 60%, transparent);}
+.clave-caja{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 22px 50px -18px rgba(0,0,0,.55);}
+.clave-caja h2{font-family:var(--f-display);font-size:21px;margin-bottom:8px;}
+.clave-caja p.hint{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:16px;}
+.clave-err{margin-top:12px;font-size:13.5px;font-weight:600;color:var(--danger);line-height:1.5;}
+.clave-acc{display:flex;gap:10px;margin-top:18px;}
+.clave-acc .btn{flex:1;min-width:0;padding:12px 14px;}
+.clave-caja .fld + .fld{margin-top:12px;}
 </style>
 </head>
 <body>
@@ -491,6 +500,27 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
   </a>
 </div>
 
+<!-- Puerta de la clave -->
+<div class="clave" id="clave" hidden>
+  <form class="clave-caja" id="claveForm" autocomplete="off">
+    <h2 id="claveTitulo">Entrar como organizadora</h2>
+    <p class="hint" id="claveBajada">Esta parte es sólo para vos. Si llegaste acá de curioso, cerrá tranquilo: no hay nada para ver.</p>
+    <div class="fld">
+      <label for="claveInput" id="claveLabel">Clave</label>
+      <input id="claveInput" type="password" autocomplete="current-password" spellcheck="false" autocapitalize="off">
+    </div>
+    <div class="fld" id="claveFld2" hidden>
+      <label for="claveInput2">Repetila</label>
+      <input id="claveInput2" type="password" autocomplete="new-password" spellcheck="false" autocapitalize="off">
+    </div>
+    <p class="clave-err" id="claveErr" role="alert" hidden></p>
+    <div class="clave-acc">
+      <button type="button" class="btn btn-ghost" id="claveCancelar">Cancelar</button>
+      <button type="submit" class="btn btn-solid" id="claveEntrar">Entrar</button>
+    </div>
+  </form>
+</div>
+
 <!-- Panel de organizadora -->
 <div class="panel" id="panel" hidden>
   <div class="panel-inner" role="dialog" aria-modal="true" aria-label="Panel de organizadora">
@@ -564,6 +594,108 @@ const DATOS_DEFECTO = {
 const DRAFT_KEY = "victoria:borrador";
 const FAV_KEY   = "victoria:favoritas";
 const TEMA_KEY  = "victoria:tema";
+const SESION_KEY = "victoria:organizadora";
+
+/* ==============================================================
+   CLAVE DE LA ORGANIZADORA
+   ---------------------------------------------------------------
+   Esto es un sitio estático: todo lo que hay en esta página lo
+   puede leer cualquiera. Por eso la clave NO está escrita acá.
+   Lo que está guardado es un resumen irreversible (SHA-256), y
+   además pasado CLAVE_VUELTAS veces, para que probar claves a lo
+   bruto sea lento.
+
+   Qué protege esto de verdad: que alguien que entra a la página
+   toque el botón "Soy la organizadora" y se ponga a editar.
+   Qué NO protege: alguien que sepa programar puede saltear la
+   puerta desde las herramientas del navegador. Y está bien que
+   sea así: el panel no cambia el sitio, sólo arma archivos que
+   después subís vos. La cerradura de verdad es tu cuenta de
+   GitHub, no esta clave.
+   ============================================================== */
+const CLAVE_VUELTAS  = 25000;
+const CLAVE_DEFECTO  = { sal:"victoria-mdp",
+                         hash:"5d18e2272213f0553226ac61a48c26df130116e6a25666c7191e5652bcaa6335" };
+
+const K256 = new Uint32Array([
+  0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+  0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+  0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+  0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+  0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+  0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+  0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+  0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2]);
+
+const rotr = (x, n) => ((x >>> n) | (x << (32 - n))) >>> 0;
+
+/* SHA-256 a mano. crypto.subtle no existe cuando la página se abre
+   con doble clic (file:// no es "contexto seguro"), así que esto
+   funciona igual en todos lados. */
+function sha256(msg){
+  const largo = msg.length;
+  const bloques = (largo + 9 + 63) >> 6;
+  const buf = new Uint8Array(bloques * 64);
+  buf.set(msg);
+  buf[largo] = 0x80;
+  const dv = new DataView(buf.buffer);
+  dv.setUint32(buf.length - 8, Math.floor(largo / 536870912));
+  dv.setUint32(buf.length - 4, (largo * 8) >>> 0);
+
+  const h = new Uint32Array([0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,
+                             0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19]);
+  const w = new Uint32Array(64);
+
+  for(let b = 0; b < bloques; b++){
+    const off = b * 64;
+    for(let i = 0; i < 16; i++) w[i] = dv.getUint32(off + i * 4);
+    for(let i = 16; i < 64; i++){
+      const x = w[i-15], y = w[i-2];
+      const s0 = rotr(x,7)  ^ rotr(x,18) ^ (x >>> 3);
+      const s1 = rotr(y,17) ^ rotr(y,19) ^ (y >>> 10);
+      w[i] = (w[i-16] + s0 + w[i-7] + s1) >>> 0;
+    }
+    let a = h[0], b1 = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], hh = h[7];
+    for(let i = 0; i < 64; i++){
+      const S1  = rotr(e,6) ^ rotr(e,11) ^ rotr(e,25);
+      const ch  = (e & f) ^ (~e & g);
+      const t1  = (hh + S1 + ch + K256[i] + w[i]) >>> 0;
+      const S0  = rotr(a,2) ^ rotr(a,13) ^ rotr(a,22);
+      const maj = (a & b1) ^ (a & c) ^ (b1 & c);
+      const t2  = (S0 + maj) >>> 0;
+      hh = g; g = f; f = e; e = (d + t1) >>> 0;
+      d = c; c = b1; b1 = a; a = (t1 + t2) >>> 0;
+    }
+    h[0]=(h[0]+a)>>>0;  h[1]=(h[1]+b1)>>>0; h[2]=(h[2]+c)>>>0; h[3]=(h[3]+d)>>>0;
+    h[4]=(h[4]+e)>>>0;  h[5]=(h[5]+f)>>>0;  h[6]=(h[6]+g)>>>0; h[7]=(h[7]+hh)>>>0;
+  }
+  const out = new Uint8Array(32), odv = new DataView(out.buffer);
+  for(let i = 0; i < 8; i++) odv.setUint32(i * 4, h[i]);
+  return out;
+}
+
+function hashClave(texto, sal){
+  let x = new TextEncoder().encode(sal + " " + texto);
+  for(let i = 0; i < CLAVE_VUELTAS; i++) x = sha256(x);
+  return Array.from(x, n => n.toString(16).padStart(2, "0")).join("");
+}
+
+/* La clave vive en datos.json, no acá: así se cambia desde el panel
+   sin tocar el HTML. Si el archivo no la trae, vale la de fábrica. */
+function claveGuardada(){
+  const c = (D && D.config && D.config.clave) || null;
+  return (c && c.hash && c.sal) ? c : CLAVE_DEFECTO;
+}
+const claveEsDeFabrica = () => claveGuardada() === CLAVE_DEFECTO;
+
+/* Comparación en tiempo constante: no le regala al que prueba
+   información sobre cuántos caracteres del hash acertó. */
+function mismoHash(a, b){
+  if(a.length !== b.length) return false;
+  let dif = 0;
+  for(let i = 0; i < a.length; i++) dif |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return dif === 0;
+}
 
 let D = null;            // datos activos
 let esAdmin = false;
@@ -851,6 +983,7 @@ function pintarFlag(){
   f.hidden = !esAdmin;
   $("adminFlagTxt").textContent =
     !HAY_STORAGE ? "Modo organizadora — ojo: este navegador no guarda borradores, descargá el datos.json antes de cerrar"
+    : claveEsDeFabrica() ? "Modo organizadora — todavía usás la clave que vino de fábrica, cambiala en Información"
     : hayBorrador ? "Modo organizadora — tenés cambios sin publicar"
     : "Modo organizadora";
   $("btnAdmin").textContent = esAdmin ? "Salir del modo organizadora" : "Soy la organizadora";
@@ -858,6 +991,120 @@ function pintarFlag(){
 
 function abrirPanel(){ $("panel").hidden = false; pintarPanel(); }
 function cerrarPanel(){ $("panel").hidden = true; editandoRef = null; }
+
+/* ---------- puerta de la clave ---------- */
+const INTENTOS_KEY = "victoria:intentos";
+let claveModo = "entrar";     // "entrar" = pedir la clave · "cambiar" = ponerle una nueva
+let claveOcupada = false;
+
+/* El contador vive en memoria; sessionStorage es sólo para que un F5
+   no borre el castigo. Si el navegador no deja guardar (pasa al abrir
+   el archivo con doble clic), la demora igual funciona. */
+let intentosMem = 0;
+function intentosFallidos(){
+  let n = intentosMem;
+  try { n = Math.max(n, Number(sessionStorage.getItem(INTENTOS_KEY)) || 0); } catch(e){}
+  return n;
+}
+function anotarIntento(n){
+  intentosMem = n;
+  try { n ? sessionStorage.setItem(INTENTOS_KEY, String(n)) : sessionStorage.removeItem(INTENTOS_KEY); }
+  catch(e){}
+}
+/* Cada error de más hace esperar el doble. Con las 25.000 vueltas del
+   hash, probar claves de a una por fuerza bruta deja de ser práctico. */
+function esperaPorIntentos(){
+  const n = intentosFallidos();
+  return n < 3 ? 0 : Math.min(30000, 1000 * Math.pow(2, n - 3));
+}
+
+function abrirClave(modo){
+  claveModo = modo;
+  const cambiar = modo === "cambiar";
+  $("claveTitulo").textContent = cambiar ? "Poner una clave nueva" : "Entrar como organizadora";
+  $("claveBajada").textContent = cambiar
+    ? "Se guarda en el datos.json, así que empieza a valer en el sitio recién cuando subas el archivo desde la pestaña Publicar."
+    : "Esta parte es sólo para vos. Si llegaste acá de curioso, cerrá tranquilo: no hay nada para ver.";
+  $("claveLabel").textContent = cambiar ? "Clave nueva" : "Clave";
+  $("claveInput").setAttribute("autocomplete", cambiar ? "new-password" : "current-password");
+  $("claveFld2").hidden = !cambiar;
+  $("claveEntrar").textContent = cambiar ? "Guardar la clave" : "Entrar";
+  $("claveInput").value = "";
+  $("claveInput2").value = "";
+  errorClave("");
+  $("clave").hidden = false;
+  $("claveInput").focus();
+}
+function cerrarClave(){
+  $("clave").hidden = true;
+  $("claveInput").value = "";
+  $("claveInput2").value = "";
+  claveOcupada = false;
+  $("claveEntrar").disabled = false;
+}
+function errorClave(txt){
+  const e = $("claveErr");
+  e.textContent = txt;
+  e.hidden = !txt;
+}
+
+async function enviarClave(){
+  if(claveOcupada) return;
+  const txt  = $("claveInput").value;
+  const txt2 = $("claveInput2").value;
+
+  if(claveModo === "cambiar"){
+    if(txt.length < 8)  return errorClave("Poné al menos 8 caracteres. Cuanto más larga, mejor.");
+    if(txt !== txt2)    return errorClave("Las dos no coinciden.");
+  } else if(!txt){
+    return errorClave("Escribí la clave.");
+  }
+
+  const espera = claveModo === "entrar" ? esperaPorIntentos() : 0;
+  claveOcupada = true;
+  $("claveEntrar").disabled = true;
+  $("claveEntrar").textContent = espera ? "Esperá…" : "Comprobando…";
+  errorClave("");
+  await new Promise(r => setTimeout(r, espera || 30));   // deja pintar el botón
+
+  if(claveModo === "cambiar"){
+    const sal = Array.from(crypto.getRandomValues(new Uint8Array(8)), n => n.toString(16).padStart(2,"0")).join("");
+    D.config.clave = { sal, hash: hashClave(txt, sal) };
+    guardarBorrador();
+    cerrarClave();
+    pintarPanel();
+    alert("Clave cambiada.\n\nOjo: hasta que no subas el datos.json desde la pestaña Publicar, el sitio sigue pidiendo la anterior.");
+    return;
+  }
+
+  const c = claveGuardada();
+  if(mismoHash(hashClave(txt, c.sal), c.hash)){
+    anotarIntento(0);
+    cerrarClave();
+    entrarComoAdmin();
+  } else {
+    const n = intentosFallidos() + 1;
+    anotarIntento(n);
+    claveOcupada = false;
+    $("claveEntrar").disabled = false;
+    $("claveEntrar").textContent = "Entrar";
+    $("claveInput").value = "";
+    $("claveInput").focus();
+    const s = Math.round(esperaPorIntentos() / 1000);
+    errorClave(s ? `Clave incorrecta. El próximo intento espera ${s} segundo${s === 1 ? "" : "s"}.` : "Clave incorrecta.");
+  }
+}
+
+function entrarComoAdmin(){
+  esAdmin = true;
+  try { sessionStorage.setItem(SESION_KEY, "1"); } catch(e){}
+  pintarFlag(); render(); abrirPanel();
+}
+function salirDeAdmin(){
+  esAdmin = false;
+  try { sessionStorage.removeItem(SESION_KEY); } catch(e){}
+  pintarFlag(); render(); cerrarPanel();
+}
 
 function nuevoRef(){
   const nums = D.prendas.map(p => parseInt(String(p.ref).replace(/\D/g,""), 10)).filter(n => !isNaN(n));
@@ -1021,7 +1268,12 @@ function formInfo(body, acc){
     <div class="fld2">
       <div class="fld"><label for="c-lugar">Lugar</label><input id="c-lugar" value="${esc(f.lugar)}"></div>
       <div class="fld"><label for="c-nota">Nota</label><input id="c-nota" value="${esc(f.nota)}" placeholder="Entrada libre"></div>
-    </div>`;
+    </div>
+    <hr style="border:none;border-top:1px solid var(--line);">
+    <p class="nota">${claveEsDeFabrica()
+      ? `<strong>Todavía usás la clave que vino de fábrica.</strong> Cambiala por una tuya: la que viene de fábrica la sabe cualquiera que haya visto cómo se armó esta página.`
+      : `La clave está puesta. Sirve para que un visitante no se meta a tocar el panel, nada más: el panel no cambia el sitio, sólo arma los archivos que después subís vos. Lo que de verdad protege la página es tu cuenta de GitHub.`}</p>
+    <div><button type="button" class="btn btn-ghost" id="btnCambiarClave">Cambiar la clave</button></div>`;
   acc.innerHTML = `<button class="btn btn-solid" id="btnGuardarInfo">Guardar información</button>`;
 }
 
@@ -1178,7 +1430,8 @@ function datosLimpios(){
     config: {
       whatsapp:c.whatsapp, instagram:c.instagram, direccion:c.direccion, comoLlegar:c.comoLlegar,
       horarios:lineas(c.horarios), pagos:lineas(c.pagos), envios:lineas(c.envios),
-      feria:{ fecha:c.feria.fecha || null, lugar:c.feria.lugar || "", nota:c.feria.nota || "" }
+      feria:{ fecha:c.feria.fecha || null, lugar:c.feria.lugar || "", nota:c.feria.nota || "" },
+      clave: c.clave || null
     },
     prendas: D.prendas, resenas: D.resenas, faqs: D.faqs
   };
@@ -1241,12 +1494,9 @@ document.addEventListener("click", async (e) => {
   if(faq) return faq.setAttribute("aria-expanded", String(faq.getAttribute("aria-expanded") !== "true"));
 
   /* --- entrar / salir del modo organizadora --- */
-  if(hit("#btnAdmin")){
-    esAdmin = !esAdmin;
-    pintarFlag(); render();
-    if(esAdmin) abrirPanel(); else cerrarPanel();
-    return;
-  }
+  if(hit("#btnAdmin")) return esAdmin ? salirDeAdmin() : abrirClave("entrar");
+  if(hit("#claveCancelar") || t.id === "clave") return cerrarClave();
+  if(hit("#btnCambiarClave")) return abrirClave("cambiar");
   if(hit("#abrirPanel")) return abrirPanel();
   if(hit("#cerrarPanel")) return cerrarPanel();
   if(t.id === "panel") return cerrarPanel();
@@ -1357,7 +1607,10 @@ document.addEventListener("click", async (e) => {
   }
 });
 
+$("claveForm").addEventListener("submit", (e) => { e.preventDefault(); enviarClave(); });
+
 document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && !$("clave").hidden) return cerrarClave();
   if(e.key === "Escape" && !$("panel").hidden) cerrarPanel();
   if(e.key === "Enter" && e.target.classList && e.target.classList.contains("foto-add")) $("fotoInput").click();
 });
@@ -1400,7 +1653,13 @@ $("fotoInput").addEventListener("change", async (e) => {
 $("q").addEventListener("input", () => render());
 $("orden").addEventListener("change", () => render());
 
-cargarDatos().then(() => { pintarFlag(); renderTodo(); });
+cargarDatos().then(() => {
+  /* Si ya pusiste la clave en esta pestaña, un F5 no te vuelve a echar.
+     Al cerrar la pestaña se pierde, así que en una compu prestada no
+     queda nadie adentro. */
+  try { if(sessionStorage.getItem(SESION_KEY) === "1") esAdmin = true; } catch(e){}
+  pintarFlag(); renderTodo();
+});
 </script>
 
 </body>
