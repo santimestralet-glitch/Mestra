@@ -1,5 +1,5 @@
 {
-  "build": "2026-08-23T20:30:00.000Z",
+  "build": "2026-08-23T21:15:00.000Z",
   "config": {
     "whatsapp": "5492235813019",
     "instagram": "victoria.modacircular",
@@ -166,32 +166,12 @@
       "a": "Sí. Coordinamos por WhatsApp y te la probás con tiempo. Si comprás a distancia, decime tu talle habitual y te paso las medidas exactas de la prenda antes de que decidas."
     },
     {
-      "q": "¿Cómo reservo una prenda?",
-      "a": "Tocás el botón verde de la prenda que te gusta. Se abre WhatsApp con el mensaje ya escrito y el código incluido. Te confirmo si sigue disponible y te la reservo."
-    },
-    {
-      "q": "¿Cómo se paga?",
-      "a": "Lo arreglamos por WhatsApp cuando reservás. Te paso las formas de pago disponibles en ese momento."
-    },
-    {
-      "q": "¿Hacen envíos?",
-      "a": "Sí, lo vemos por WhatsApp según dónde estés. Puede ser entrega en mano o envío, y ahí te paso el costo."
-    },
-    {
-      "q": "¿Puedo devolver o cambiar algo?",
-      "a": "Si compraste a distancia y la prenda no era como la describí, te devuelvo la plata. Si simplemente no te gustó cómo te queda, escribime y lo resolvemos."
-    },
-    {
       "q": "¿Puedo llevar ropa que ya no uso?",
       "a": "Sí. Traés las prendas y Victoria elige las que entran. Por las seleccionadas podés cobrar en el momento con la compra directa, o llevarte un crédito a cuenta para usar en tus próximas compras. Escribime por WhatsApp y coordinamos."
     },
     {
       "q": "¿Cómo sé que la ropa está en buen estado?",
       "a": "Cada prenda tiene su estado con los cuadraditos: cuatro es «como nuevo» y uno es «con detalles». Si dice «con detalles», en la descripción explico exactamente cuál es."
-    },
-    {
-      "q": "¿Prueba?",
-      "a": "Sí."
     }
   ]
 }

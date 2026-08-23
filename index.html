@@ -24,9 +24,9 @@
 :root{
   /* crema y oro latón. El oro es estructura (filetes, marcas, números),
      nunca relleno grande: en superficie se vuelve tarjeta de casamiento. */
-  --bg:#FBF7EF; --surface:#FFFCF5; --surface-2:#F2EADA; --surface-3:#E7DCC6;
-  --ink:#241F18; --muted:#6B6154; --line:#E4D9C2; --line-strong:#CBBB9B;
-  --accent:#7D601F; --accent-hover:#634B15; --accent-ink:#FFFCF5; --accent-wash:#F5EEDC;
+  --bg:#F1E9D9; --surface:#F8F1E4; --surface-2:#EAE0CD; --surface-3:#DDD0B8;
+  --ink:#241F18; --muted:#655B4E; --line:#DFD3BC; --line-strong:#C2B18C;
+  --accent:#7A5D1C; --accent-hover:#5F4813; --accent-ink:#F8F1E4; --accent-wash:#EDE4D0;
   --wa:#14603A; --wa-hover:#0F4B2C; --wa-ink:#FFFFFF;
   --warn:#8A5A12; --danger:#9E2B20;
   --shadow:0 1px 2px rgba(60,46,20,.05), 0 8px 24px -14px rgba(60,46,20,.22);
@@ -95,7 +95,12 @@ button{font:inherit;color:inherit;}
 @media (max-width:700px){ .nav-links{display:none;} }
 
 /* ============================================================ HERO */
-.hero{background:var(--surface);border-bottom:1px solid var(--line);padding-block:clamp(32px,6vw,56px);}
+.hero{position:relative;overflow:hidden;isolation:isolate;background:var(--surface);border-bottom:1px solid var(--line);padding-block:clamp(32px,6vw,56px);}
+/* Una toma del interior detrás del inicio, donde está la etiqueta con las
+   prendas disponibles. Muy tenue para que el título y la etiqueta manden. */
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:url("fotos/local-hero.jpg") center/cover no-repeat;opacity:.06;}
+:root[data-theme="dark"] .hero::before{opacity:.11;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .hero::before{opacity:.11;} }
 .hero-grid{display:grid;gap:clamp(24px,4vw,48px);grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;}
 @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
 .eyebrow{color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
@@ -669,10 +674,6 @@ const DATOS_DEFECTO = {
   resenas: [],
   faqs: [
     { q:"¿Puedo probarme la ropa antes de comprar?", a:"Sí. Coordinamos por WhatsApp y te la probás con tiempo. Si comprás a distancia, decime tu talle habitual y te paso las medidas exactas de la prenda antes de que decidas." },
-    { q:"¿Cómo reservo una prenda?", a:"Tocás el botón verde de la prenda que te gusta. Se abre WhatsApp con el mensaje ya escrito y el código incluido. Te confirmo si sigue disponible y te la reservo." },
-    { q:"¿Cómo se paga?", a:"Lo arreglamos por WhatsApp cuando reservás. Te paso las formas de pago disponibles en ese momento." },
-    { q:"¿Hacen envíos?", a:"Sí, lo vemos por WhatsApp según dónde estés. Puede ser entrega en mano o envío, y ahí te paso el costo." },
-    { q:"¿Puedo devolver o cambiar algo?", a:"Si compraste a distancia y la prenda no era como la describí, te devuelvo la plata. Si simplemente no te gustó cómo te queda, escribime y lo resolvemos." },
     { q:"¿Puedo llevar ropa que ya no uso?", a:"Sí. Traés las prendas y Victoria elige las que entran. Por las seleccionadas podés cobrar en el momento con la compra directa, o llevarte un crédito a cuenta para usar en tus próximas compras. Escribime por WhatsApp y coordinamos." },
     { q:"¿Cómo sé que la ropa está en buen estado?", a:"Cada prenda tiene su estado con los cuadraditos: cuatro es «como nuevo» y uno es «con detalles». Si dice «con detalles», en la descripción explico exactamente cuál es." }
   ]
