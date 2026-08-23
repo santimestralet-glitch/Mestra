@@ -14,7 +14,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Karla:wght@400..700&family=Courier+Prime:wght@400;700&display=swap">
 
 <style>
 /* ============================================================
@@ -22,36 +22,39 @@
    redefine tokens, en los tres estados (sistema / dark / light).
    ============================================================ */
 :root{
-  --bg:#F6F3F0; --surface:#FFFFFF; --surface-2:#EDE6E4; --surface-3:#E3D9D8;
-  --ink:#241A1E; --muted:#6B5B61; --line:#DBD0CE; --line-strong:#C3B3B1;
-  --accent:#7A2E48; --accent-hover:#5E2137; --accent-ink:#FFFFFF; --accent-wash:#F3E9EC;
-  --wa:#0E7A40; --wa-hover:#0A6033; --wa-ink:#FFFFFF;
-  --warn:#8A4B12; --danger:#A32020;
-  --shadow:0 1px 2px rgba(36,26,30,.06), 0 8px 24px -12px rgba(36,26,30,.18);
-  --shadow-lift:0 2px 4px rgba(36,26,30,.08), 0 18px 40px -18px rgba(36,26,30,.28);
-  --radius:6px; --maxw:1120px; --gutter:clamp(18px, 4vw, 40px);
-  --f-display:'Fraunces', 'Iowan Old Style', Georgia, serif;
-  --f-body:'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* crema y oro latón. El oro es estructura (filetes, marcas, números),
+     nunca relleno grande: en superficie se vuelve tarjeta de casamiento. */
+  --bg:#FBF7EF; --surface:#FFFCF5; --surface-2:#F2EADA; --surface-3:#E7DCC6;
+  --ink:#241F18; --muted:#6B6154; --line:#E4D9C2; --line-strong:#CBBB9B;
+  --accent:#7D601F; --accent-hover:#634B15; --accent-ink:#FFFCF5; --accent-wash:#F5EEDC;
+  --wa:#14603A; --wa-hover:#0F4B2C; --wa-ink:#FFFFFF;
+  --warn:#8A5A12; --danger:#9E2B20;
+  --shadow:0 1px 2px rgba(60,46,20,.05), 0 8px 24px -14px rgba(60,46,20,.22);
+  --shadow-lift:0 2px 4px rgba(60,46,20,.07), 0 20px 44px -20px rgba(60,46,20,.32);
+  --radius:3px; --maxw:1120px; --gutter:clamp(18px, 4vw, 40px);
+  --f-display:'Bodoni Moda', 'Didot', 'Times New Roman', serif;
+  --f-body:'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-tag:'Courier Prime', 'Courier New', ui-monospace, monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#171114; --surface:#211A1D; --surface-2:#2B2225; --surface-3:#382C30;
-    --ink:#F4ECEE; --muted:#B7A6AC; --line:#3A2E32; --line-strong:#54444A;
-    --accent:#E594AE; --accent-hover:#F0AEC2; --accent-ink:#2A0F1B; --accent-wash:#2C1A21;
-    --wa:#2FBE68; --wa-hover:#4FD183; --wa-ink:#08170E;
-    --warn:#E0A867; --danger:#F08A8A;
-    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
-    --shadow-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 40px -18px rgba(0,0,0,.8);
+    --bg:#16120C; --surface:#1E1913; --surface-2:#29221A; --surface-3:#362D22;
+    --ink:#F4EBDB; --muted:#B3A794; --line:#33291F; --line-strong:#4C4032;
+    --accent:#D9AE5A; --accent-hover:#E8C176; --accent-ink:#1A1207; --accent-wash:#2A2117;
+    --wa:#35B06B; --wa-hover:#52C685; --wa-ink:#06180E;
+    --warn:#D9A44E; --danger:#E88A80;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 8px 24px -14px rgba(0,0,0,.75);
+    --shadow-lift:0 2px 4px rgba(0,0,0,.5), 0 20px 44px -20px rgba(0,0,0,.85);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#171114; --surface:#211A1D; --surface-2:#2B2225; --surface-3:#382C30;
-  --ink:#F4ECEE; --muted:#B7A6AC; --line:#3A2E32; --line-strong:#54444A;
-  --accent:#E594AE; --accent-hover:#F0AEC2; --accent-ink:#2A0F1B; --accent-wash:#2C1A21;
-  --wa:#2FBE68; --wa-hover:#4FD183; --wa-ink:#08170E;
-  --warn:#E0A867; --danger:#F08A8A;
-  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
-  --shadow-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 40px -18px rgba(0,0,0,.8);
+  --bg:#16120C; --surface:#1E1913; --surface-2:#29221A; --surface-3:#362D22;
+  --ink:#F4EBDB; --muted:#B3A794; --line:#33291F; --line-strong:#4C4032;
+  --accent:#D9AE5A; --accent-hover:#E8C176; --accent-ink:#1A1207; --accent-wash:#2A2117;
+  --wa:#35B06B; --wa-hover:#52C685; --wa-ink:#06180E;
+  --warn:#D9A44E; --danger:#E88A80;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 8px 24px -14px rgba(0,0,0,.75);
+  --shadow-lift:0 2px 4px rgba(0,0,0,.5), 0 20px 44px -20px rgba(0,0,0,.85);
 }
 
 /* ============================================================ BASE */
@@ -63,7 +66,9 @@ html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
 }
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;}
 img{max-width:100%;display:block;}
-h1,h2,h3{font-family:var(--f-display);font-variation-settings:'SOFT' 18,'WONK' 1;font-weight:700;line-height:1.02;margin:0;text-wrap:balance;letter-spacing:-.015em;}
+/* Bodoni es una didona: el asta fina se rompe si se aprieta el tracking.
+   Va casi neutro y con algo más de aire entre renglones que un serif normal. */
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.06;margin:0;text-wrap:balance;letter-spacing:-.005em;}
 p,figure,blockquote,dl,dd{margin:0;}
 a{color:var(--accent);text-underline-offset:3px;}
 button{font:inherit;color:inherit;}
@@ -71,15 +76,17 @@ button{font:inherit;color:inherit;}
 .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter);}
 .skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--accent);color:var(--accent-ink);padding:12px 18px;border-radius:0 0 var(--radius) 0;font-weight:600;}
 .skip:focus{left:0;}
-.label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-family:var(--f-body);}
+/* Todo lo que en una feria va escrito a mano en una etiqueta —códigos,
+   rubros, estados— usa la máquina de escribir. Es el idioma del perchero. */
+.label{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:var(--f-tag);}
 [hidden]{display:none !important;}
 
 /* ============================================================ MASTHEAD */
 .masthead{border-bottom:1px solid var(--line);background:var(--surface);}
 .nav{display:flex;align-items:center;gap:16px;padding-block:14px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;color:var(--ink);margin-right:auto;}
-.brand-mark{width:34px;height:34px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:18px;font-variation-settings:'WONK' 1;padding-bottom:2px;}
-.brand-name{font-family:var(--f-display);font-weight:700;font-size:19px;letter-spacing:-.01em;}
+.brand-mark{width:34px;height:34px;flex:none;border-radius:50%;background:transparent;border:1px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-display);font-weight:500;font-size:17px;padding-bottom:1px;}
+.brand-name{font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:.01em;}
 .nav-links{display:flex;gap:4px;flex-wrap:wrap;}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:10px 12px;border-radius:var(--radius);min-height:44px;display:flex;align-items:center;}
 .nav-links a:hover{color:var(--ink);background:var(--surface-2);}
@@ -90,12 +97,12 @@ button{font:inherit;color:inherit;}
 /* ============================================================ HERO */
 .hero{background:var(--surface);border-bottom:1px solid var(--line);padding-block:clamp(32px,6vw,56px);}
 .hero-grid{display:grid;gap:clamp(24px,4vw,48px);grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;}
-.hero-grid.solo{grid-template-columns:minmax(0,1fr);max-width:760px;}
 @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
-.eyebrow{color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-.eyebrow::after{content:"";height:1px;flex:1;background:var(--line-strong);max-width:80px;}
-.hero h1{font-size:clamp(38px,7vw,68px);font-variation-settings:'SOFT' 30,'WONK' 1;font-weight:800;margin-bottom:16px;}
-.hero h1 em{font-style:normal;color:var(--accent);display:block;}
+.eyebrow{color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.eyebrow::after{content:"";height:1px;flex:1;background:var(--accent);opacity:.45;max-width:96px;}
+.hero h1{font-size:clamp(40px,7.4vw,74px);font-weight:600;margin-bottom:18px;}
+/* El segundo renglón en itálica de Bodoni: el gesto tipográfico de la página. */
+.hero h1 em{font-style:italic;font-weight:500;color:var(--accent);display:block;}
 .hero-lead{font-size:clamp(16px,1.6vw,18px);color:var(--muted);max-width:46ch;margin-bottom:26px;}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
 
@@ -109,9 +116,30 @@ button{font:inherit;color:inherit;}
 .btn-ghost:hover{background:var(--surface-2);}
 .btn svg{flex:none;}
 
-.feria-card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
+/* ---- LA ETIQUETA ----
+   Es el único gesto fuerte de la página: el cartoncito que cuelga de una
+   percha, con su troquel y su filete de oro. Dice cuántas prendas hay hoy
+   —dato real, no adorno— y por qué son una sola de cada una. Aparece acá
+   y en ningún otro lado; en las tarjetas vuelve en chiquito como la cinta. */
+.tag{
+  position:relative;width:min(228px,100%);justify-self:center;
+  padding:46px 22px 26px;text-align:center;
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:7px;
+  box-shadow:var(--shadow-lift);transform:rotate(-3deg);
+}
+.tag::before{
+  content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  width:15px;height:15px;border-radius:50%;background:var(--bg);
+  box-shadow:inset 0 0 0 1px var(--line-strong);
+}
+.tag-num{display:block;font-family:var(--f-display);font-weight:600;font-size:58px;line-height:.9;font-variant-numeric:tabular-nums;}
+.tag-rule{display:block;width:42px;height:1px;background:var(--accent);opacity:.55;margin:15px auto;}
+.tag-txt{display:block;font-family:var(--f-tag);font-size:10px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;color:var(--accent);line-height:1.7;}
+.hero-side{display:grid;gap:26px;align-content:center;justify-items:center;width:100%;}
+
+.feria-card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);width:100%;}
 .feria-card .label{color:var(--muted);}
-.feria-when{font-family:var(--f-display);font-weight:700;font-size:26px;line-height:1.1;font-variation-settings:'SOFT' 20,'WONK' 1;margin:8px 0 4px;}
+.feria-when{font-family:var(--f-display);font-weight:700;font-size:26px;line-height:1.1;margin:8px 0 4px;}
 .feria-when::first-letter{text-transform:uppercase;}
 .feria-count{color:var(--accent);font-weight:700;font-size:14px;margin-bottom:14px;font-variant-numeric:tabular-nums;}
 .feria-rows{display:grid;gap:9px;border-top:1px solid var(--line);padding-top:14px;}
@@ -123,7 +151,7 @@ button{font:inherit;color:inherit;}
 .section{padding-block:clamp(48px,7vw,80px);}
 .section--tint{background:var(--surface);border-block:1px solid var(--line);}
 .section-head{margin-bottom:clamp(24px,3vw,36px);}
-.section-head h2{font-size:clamp(28px,4vw,40px);font-variation-settings:'SOFT' 24,'WONK' 1;}
+.section-head h2{font-size:clamp(28px,4vw,40px);}
 .section-head p{color:var(--muted);margin-top:10px;max-width:58ch;}
 
 /* ============================================================ TOOLBAR */
@@ -155,14 +183,16 @@ button{font:inherit;color:inherit;}
 .fav-btn:hover{color:var(--accent);transform:scale(1.06);}
 .fav-btn[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);}
 .fav-btn[aria-pressed="true"] svg{fill:currentColor;}
-.badge{position:absolute;top:12px;left:0;z-index:2;padding:5px 11px 5px 10px;background:var(--accent);color:var(--accent-ink);font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;border-radius:0 3px 3px 0;}
+.badge{position:absolute;top:12px;left:0;z-index:2;padding:5px 11px 5px 10px;background:var(--accent);color:var(--accent-ink);font-family:var(--f-tag);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border-radius:0 3px 3px 0;}
 .badge--hold{background:var(--warn);color:#FFFFFF;}
 :root[data-theme="dark"] .badge--hold{color:#17110F;}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .badge--hold{color:#17110F;} }
 .sold-veil{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:color-mix(in srgb, var(--ink) 55%, transparent);}
-.sold-veil span{border:2px solid var(--surface);color:var(--surface);padding:7px 16px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transform:rotate(-6deg);}
-.card-tape{display:flex;justify-content:space-between;gap:10px;padding:7px 13px;background:var(--accent-wash);border-bottom:1px solid var(--line);color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;}
-.card-tape .ref{color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.08em;}
+.sold-veil span{border:2px solid var(--surface);color:var(--surface);padding:7px 16px;border-radius:3px;font-family:var(--f-tag);font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;transform:rotate(-6deg);}
+/* La cinta de la tarjeta es la etiqueta chica: rubro a la izquierda,
+   código a la derecha, tal como viene escrito en el cartoncito real. */
+.card-tape{display:flex;justify-content:space-between;gap:10px;padding:7px 13px;background:var(--accent-wash);border-block:1px solid color-mix(in srgb, var(--accent) 30%, transparent);color:var(--accent);font-family:var(--f-tag);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;}
+.card-tape .ref{color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.1em;}
 .card-body{padding:13px;display:flex;flex-direction:column;gap:9px;flex:1;}
 .card-name{font-size:15.5px;font-weight:600;line-height:1.25;}
 .card-desc{font-size:13px;color:var(--muted);line-height:1.45;}
@@ -171,13 +201,27 @@ button{font:inherit;color:inherit;}
 .wear i{width:7px;height:7px;background:var(--line-strong);border-radius:1px;display:block;}
 .wear i.on{background:var(--accent);}
 .card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.price{font-family:var(--f-display);font-weight:700;font-size:21px;font-variation-settings:'SOFT' 10,'WONK' 0;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+.price{font-family:var(--f-display);font-weight:600;font-size:23px;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:0;}
 .card-actions{display:flex;gap:6px;}
 .icon-btn{width:44px;height:44px;flex:none;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:var(--radius);background:transparent;cursor:pointer;color:var(--muted);}
 .icon-btn:hover{background:var(--surface-2);color:var(--ink);}
 .buy-btn{min-height:44px;padding:10px 15px;background:var(--wa);color:var(--wa-ink);border:none;border-radius:var(--radius);cursor:pointer;font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:background-color .15s ease;}
 .buy-btn:hover{background:var(--wa-hover);}
 .buy-btn[disabled]{background:var(--surface-3);color:var(--muted);cursor:not-allowed;}
+
+/* En el celular la tarjeta mide unos 160px y los tres elementos no entran en
+   una fila: el botón quedaba cortado y el texto partido en dos renglones.
+   Precio y compartir arriba, "La quiero" abajo a todo el ancho, que además es
+   el gesto que más se toca. `display:contents` sube los botones a la grilla
+   del pie sin tocar el HTML que arma el JS.
+   Va acá abajo a propósito: si se declara antes que `.card-actions{display:flex}`
+   la regla de después lo pisa, porque el media query no suma especificidad. */
+@media (max-width:560px){
+  .card-foot{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;}
+  .card-actions{display:contents;}
+  .card-foot .icon-btn{grid-column:2;grid-row:1;}
+  .card-foot .buy-btn{grid-column:1/-1;grid-row:2;width:100%;justify-content:center;white-space:nowrap;}
+}
 .card-admin{display:flex;gap:6px;padding:0 13px 13px;}
 .card-admin button{flex:1;min-height:38px;font-size:12px;font-weight:600;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--surface-2);cursor:pointer;}
 .card-admin button.del{color:var(--danger);border-color:var(--danger);background:transparent;}
@@ -189,12 +233,12 @@ button{font:inherit;color:inherit;}
 .steps{display:grid;gap:clamp(18px,2.5vw,26px);grid-template-columns:repeat(auto-fit,minmax(230px,1fr));counter-reset:step;}
 .step{border-top:2px solid var(--accent);padding-top:18px;}
 .step::before{counter-increment:step;content:"Paso " counter(step);display:block;margin-bottom:9px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);}
-.step h3{font-size:19px;margin-bottom:7px;font-variation-settings:'SOFT' 16,'WONK' 0;}
+.step h3{font-size:19px;margin-bottom:7px;}
 .step p{color:var(--muted);font-size:14.5px;}
 
 /* ============================================================ RESEÑAS */
 .rev-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
-.rev-avg{font-family:var(--f-display);font-weight:800;font-size:46px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums;font-variation-settings:'SOFT' 20,'WONK' 1;}
+.rev-avg{font-family:var(--f-display);font-weight:800;font-size:46px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums;}
 .stars{color:var(--accent);letter-spacing:2px;font-size:16px;}
 .rev-count{color:var(--muted);font-size:13.5px;}
 .rev-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));}
@@ -206,7 +250,7 @@ button{font:inherit;color:inherit;}
 
 /* ============================================================ INFO */
 .info-grid{display:grid;gap:clamp(18px,3vw,32px);grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
-.info-block h3{font-size:17px;margin-bottom:10px;font-variation-settings:'SOFT' 14,'WONK' 0;}
+.info-block h3{font-size:17px;margin-bottom:10px;}
 .info-block p,.info-block li{color:var(--muted);font-size:14.5px;}
 .info-block ul{margin:0;padding-left:18px;display:grid;gap:5px;}
 
@@ -214,7 +258,7 @@ button{font:inherit;color:inherit;}
 .band{background:var(--accent);color:var(--accent-ink);padding-block:clamp(40px,6vw,64px);}
 .band-inner{display:grid;gap:26px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:center;}
 @media (max-width:760px){ .band-inner{grid-template-columns:1fr;} }
-.band h2{font-size:clamp(26px,3.6vw,38px);font-variation-settings:'SOFT' 26,'WONK' 1;margin-bottom:12px;}
+.band h2{font-size:clamp(26px,3.6vw,38px);margin-bottom:12px;}
 .band p{opacity:.86;max-width:52ch;font-size:15.5px;}
 .band .btn-ghost{border-color:color-mix(in srgb, var(--accent-ink) 45%, transparent);color:var(--accent-ink);}
 .band .btn-ghost:hover{background:color-mix(in srgb, var(--accent-ink) 12%, transparent);}
@@ -360,23 +404,31 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 <section class="hero" id="top">
   <div class="wrap hero-grid" id="heroGrid">
     <div>
-      <p class="eyebrow label">Feria de moda circular</p>
-      <h1>Prendas con historia<em>buscando segunda dueña</em></h1>
+      <p class="eyebrow label">Feria de moda circular · Mar del Plata</p>
+      <h1>Cada prenda estuvo<em>en otro ropero</em></h1>
       <p class="hero-lead">
-        Elegís acá abajo la que te gusta, tocás el botón y me escribís directo por WhatsApp.
-        Te la reservo hasta que la vengas a buscar. Cada prenda que se va es una prenda menos en el descarte.
+        Elegís la que te gusta, tocás el botón y me escribís directo por WhatsApp.
+        Te la reservo hasta que la vengas a buscar. De cada una hay una sola:
+        cuando se va, se fue.
       </p>
       <div class="hero-cta">
         <a class="btn btn-solid" href="#prendas">Ver las prendas</a>
         <a class="btn btn-ghost" href="#dar">Tengo ropa para dar</a>
       </div>
     </div>
-    <aside class="feria-card" id="feriaCard" aria-labelledby="feriaTitle" hidden>
-      <p class="label" id="feriaTitle">Próxima feria</p>
-      <p class="feria-when" id="feriaWhen">—</p>
-      <p class="feria-count" id="feriaCount"></p>
-      <dl class="feria-rows" id="feriaRows"></dl>
-    </aside>
+    <div class="hero-side">
+      <div class="tag" role="img" aria-label="Hoy hay prendas disponibles, una sola de cada una" id="tagHero">
+        <span class="tag-num" id="tagNum">—</span>
+        <span class="tag-rule" aria-hidden="true"></span>
+        <span class="tag-txt">en el perchero<br>una sola de cada una</span>
+      </div>
+      <aside class="feria-card" id="feriaCard" aria-labelledby="feriaTitle" hidden>
+        <p class="label" id="feriaTitle">Próxima feria</p>
+        <p class="feria-when" id="feriaWhen">—</p>
+        <p class="feria-count" id="feriaCount"></p>
+        <dl class="feria-rows" id="feriaRows"></dl>
+      </aside>
+    </div>
   </div>
 </section>
 
@@ -777,15 +829,26 @@ function guardarBorrador(){
 /* ==============================================================
    PÁGINA PÚBLICA
    ============================================================== */
+/* La etiqueta del hero muestra un dato real: cuántas prendas hay sin vender.
+   Si no hay ninguna, se esconde en vez de cantar un cero. */
+function renderTag(){
+  const n = D.prendas.filter(p => p.venta !== "vendida").length;
+  $("tagHero").hidden = n === 0;
+  $("tagNum").textContent = n;
+  $("tagHero").setAttribute("aria-label",
+    n === 1 ? "Hay 1 prenda en el perchero, una sola de cada una"
+            : `Hay ${n} prendas en el perchero, una sola de cada una`);
+}
+
 function renderFeria(){
   const card = $("feriaCard"), f = D.config.feria;
   const ok = f && f.fecha && !isNaN(new Date(f.fecha));
-  if(!ok){ card.hidden = true; $("heroGrid").classList.add("solo"); return; }
+  if(!ok){ card.hidden = true; return; }
 
   const t = new Date(f.fecha), ms = t - Date.now();
-  if(ms < -12*3600*1000){ card.hidden = true; $("heroGrid").classList.add("solo"); return; }
+  if(ms < -12*3600*1000){ card.hidden = true; return; }
 
-  card.hidden = false; $("heroGrid").classList.remove("solo");
+  card.hidden = false;
   $("feriaWhen").textContent = t.toLocaleDateString("es-AR", {weekday:"long", day:"numeric", month:"long"});
   const dias = Math.ceil(ms/86400000);
   $("feriaCount").textContent = ms <= 0 ? "Es hoy — te esperamos" : dias === 1 ? "Falta 1 día" : `Faltan ${dias} días`;
@@ -950,7 +1013,7 @@ function renderFooter(){
   b.target = "_blank"; b.rel = "noopener";
 }
 
-function renderTodo(){ renderFeria(); render(); renderResenas(); renderInfo(); renderFaq(); renderFooter(); }
+function renderTodo(){ renderTag(); renderFeria(); render(); renderResenas(); renderInfo(); renderFaq(); renderFooter(); }
 
 /* ==============================================================
    ACCIONES PÚBLICAS
