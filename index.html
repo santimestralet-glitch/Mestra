@@ -415,16 +415,18 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
    El estado inicial vive detras de la clase .foco, que la pone el JS: si el
    script no corre, no queda nada invisible esperando a nadie. */
 @media (prefers-reduced-motion: no-preference){
-  .foco{
-    opacity:0;
-    filter:blur(9px);
-    transform:translateY(16px);
+  /* El estado desenfocado no lleva transicion: la clase se la pone el JS a un
+     elemento que ya esta visible, y con transicion el bloque se desvaneceria
+     a la vista antes de volver. La transicion vive en .enfocado, que es el
+     unico cambio que queremos ver. */
+  .foco{opacity:0;filter:blur(9px);transform:translateY(16px);transition:none;}
+  .foco.enfocado{
+    opacity:1;filter:blur(0);transform:none;
     transition:opacity .6s ease,
                filter .6s ease,
                transform .6s cubic-bezier(.16,.84,.3,1);
     transition-delay:var(--foco-espera, 0ms);
   }
-  .foco.enfocado{opacity:1;filter:blur(0);transform:none;}
 }
 </style>
 <!-- Ficha de negocio local para Google: dirección, horarios y contacto en el
@@ -1136,10 +1138,24 @@ function enfocar(){
     });
   }, { threshold:.08, rootMargin:"0px 0px -8% 0px" });
 
+  const marcados = [];
   document.querySelectorAll(SEL_FOCO).forEach(el => {
+    /* Un bloque dentro de una seccion oculta mide cero y el observador nunca
+       lo va a ver entrar: quedaria desenfocado para siempre el dia que esa
+       seccion aparezca. Mejor ni tocarlo. */
+    if(el.closest("[hidden]")) return;
     el.classList.add("foco");
+    marcados.push(el);
     obs.observe(el);
   });
+
+  /* Red de seguridad. Si el observador no entrega nunca (pestana en segundo
+     plano, navegador raro), al segundo enfocamos todo a mano. Perder el
+     efecto es barato; dejar la pagina en blanco no. */
+  setTimeout(() => {
+    if(document.querySelector(".enfocado")) return;
+    marcados.forEach(el => el.classList.add("enfocado"));
+  }, 1000);
 }
 
 function renderTodo(){ renderTag(); renderFeria(); render(); renderResenas(); renderInfo(); renderFaq(); renderFooter(); }
