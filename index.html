@@ -307,6 +307,9 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .foto-slot{position:relative;aspect-ratio:3/4;border-radius:3px;overflow:hidden;border:1px solid var(--line);}
 .foto-slot img{width:100%;height:100%;object-fit:cover;}
 .foto-slot button{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,.7);color:#fff;cursor:pointer;font-size:13px;line-height:1;}
+.foto-tag{position:absolute;left:0;bottom:0;right:0;background:var(--warn);color:#FFFFFF;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:3px 2px;}
+:root[data-theme="dark"] .foto-tag{color:#17110F;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .foto-tag{color:#17110F;} }
 .foto-add{border:1.5px dashed var(--line-strong);border-radius:3px;aspect-ratio:3/4;display:grid;place-items:center;text-align:center;padding:8px;cursor:pointer;color:var(--muted);font-size:12px;background:var(--surface-2);}
 
 .nota{border-left:3px solid var(--accent);background:var(--surface);padding:14px 16px;border-radius:0 var(--radius) var(--radius) 0;font-size:14px;color:var(--muted);line-height:1.55;}
@@ -664,14 +667,15 @@ function renderFeria(){
 function tarjeta(p){
   const vendida = p.venta === "vendida", reservada = p.venta === "reservada";
   const fav = favoritas.includes(p.ref), nivel = ESTADOS[p.estado] || 2;
-  const foto = p.fotos && p.fotos.length ? p.fotos[0] : null;
+  const foto = p.fotos && p.fotos.length ? srcDe(p.fotos[0]) : null;
   const cuadros = [1,2,3,4].map(n => `<i class="${n <= nivel ? "on" : ""}"></i>`).join("");
   const sello = vendida ? "" : reservada ? `<span class="badge badge--hold">Reservada</span>` : p.nueva ? `<span class="badge">Recién llegada</span>` : "";
 
   return `
   <article class="card" data-venta="${esc(p.venta)}">
     <div class="card-photo">
-      ${foto ? `<img src="${esc(foto)}" alt="${esc(p.nombre)}, talle ${esc(p.talle)}" loading="lazy">`
+      ${foto ? `<img src="${esc(foto)}" alt="${esc(p.nombre)}, talle ${esc(p.talle)}" loading="lazy"
+                    onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-empty',innerHTML:'<span>${esc(p.categoria)}</span><span>Foto en camino</span>'}))">`
              : `<div class="photo-empty"><span>${esc(p.categoria)}</span><span>Foto en camino</span></div>`}
       ${sello}
       ${vendida ? `<div class="sold-veil"><span>Vendida</span></div>` : ""}
@@ -878,7 +882,7 @@ function listaPrendas(body, acc){
   body.innerHTML = `<div class="adm-list">${
     D.prendas.length ? D.prendas.map(p => `
       <div class="adm-row">
-        ${p.fotos && p.fotos.length ? `<img class="adm-thumb" src="${esc(p.fotos[0])}" alt="">` : `<div class="adm-thumb"></div>`}
+        ${p.fotos && p.fotos.length ? `<img class="adm-thumb" src="${esc(srcDe(p.fotos[0]))}" alt="">` : `<div class="adm-thumb"></div>`}
         <div class="txt"><b>${esc(p.nombre)}</b><span>${esc(p.ref)} · ${esc(p.categoria)} · ${money(p.precio)} · ${esc(p.venta)}</span></div>
         <button data-pedit="${esc(p.ref)}">Editar</button>
         <button class="del" data-pdel="${esc(p.ref)}" aria-label="Borrar ${esc(p.nombre)}">✕</button>
@@ -926,11 +930,21 @@ function formPrenda(body, acc){
     <div class="fld">
       <label>Fotos (hasta 3)</label>
       <div class="fotos-grid" id="fotosGrid"></div>
-      <p class="hint">Se achican solas a 620 px para que la página cargue rápido. La primera es la que se ve en el catálogo.</p>
+      <p class="hint">Se achican solas a 620 px. La primera es la que se ve en el catálogo.
+         Las nuevas quedan pendientes de subir: las bajás todas juntas desde <strong>Publicar</strong>.</p>
+    </div>
+    <div class="fld">
+      <label for="p-url">…o pegá el link de una imagen</label>
+      <div style="display:flex;gap:8px;">
+        <input id="p-url" placeholder="https://…" style="flex:1;">
+        <button type="button" class="btn btn-ghost" id="btnAddUrl" style="min-height:44px;padding:10px 16px;">Sumar</button>
+      </div>
     </div>
     <p class="nota">Código de la prenda: <strong>${esc(p.ref)}</strong>. Es el que te llega en el mensaje de WhatsApp.</p>`;
 
-  fotosTmp = (p.fotos || []).slice();
+  // fotosTmp: {ruta, src, nueva}. `ruta` es lo que se guarda en datos.json;
+  // `src` es lo que se muestra (para las ya subidas, es la misma ruta).
+  fotosTmp = (p.fotos || []).map(r => ({ ruta:r, src: srcDe(r), nueva:false }));
   pintarFotos();
 
   acc.innerHTML = `
@@ -938,11 +952,23 @@ function formPrenda(body, acc){
     <button class="btn btn-solid" id="btnGuardarPrenda" data-ref="${esc(p.ref)}" data-nueva="${nueva}">Guardar prenda</button>`;
 }
 
+/* Una ruta relativa ("fotos/x.jpg") se muestra desde el servidor, salvo que
+   todavía esté pendiente de subir: ahí mostramos la copia que tenemos en memoria. */
+function srcDe(ruta){
+  if(!ruta) return "";
+  const pend = (D && D._pendientes) ? D._pendientes[ruta] : null;
+  return pend || ruta;
+}
+
 function pintarFotos(){
   const g = $("fotosGrid");
   if(!g) return;
-  g.innerHTML = fotosTmp.map((src,i) =>
-    `<div class="foto-slot"><img src="${esc(src)}" alt=""><button type="button" data-fotodel="${i}" aria-label="Quitar foto ${i+1}">✕</button></div>`).join("")
+  g.innerHTML = fotosTmp.map((f,i) =>
+    `<div class="foto-slot">
+       <img src="${esc(f.src)}" alt="">
+       ${f.nueva ? `<span class="foto-tag">sin subir</span>` : ""}
+       <button type="button" data-fotodel="${i}" aria-label="Quitar foto ${i+1}">✕</button>
+     </div>`).join("")
     + (fotosTmp.length < 3 ? `<div class="foto-add" id="fotoAdd" role="button" tabindex="0">+ Agregar<br>foto</div>` : "");
 }
 
@@ -1034,25 +1060,115 @@ function listaFaqs(body, acc){
 }
 
 /* ---------- publicar ---------- */
+function fotosPendientes(){
+  const p = (D && D._pendientes) || {};
+  // Sólo las que alguna prenda usa de verdad.
+  const usadas = new Set(D.prendas.flatMap(x => x.fotos || []));
+  return Object.keys(p).filter(r => usadas.has(r));
+}
+
 function tabPublicar(body, acc){
   const json = JSON.stringify(datosLimpios(), null, 2);
   const kb = Math.round(json.length / 1024);
-  const alto = kb > 3000;
+  const pend = fotosPendientes();
+  const pesoFotos = Math.round(pend.reduce((a,r) => a + D._pendientes[r].length * 0.75, 0) / 1024);
+
   body.innerHTML = `
-    <p class="nota">Los cambios que hacés acá se guardan <strong>en este navegador</strong>. Para que los vean tus clientas hay que subir el archivo actualizado:</p>
+    <p class="nota">Los cambios se guardan <strong>en este navegador</strong>. Para que los vean tus clientas hay que subir los archivos:</p>
     <ol style="padding-left:20px;display:grid;gap:8px;color:var(--muted);font-size:14.5px;line-height:1.5;">
-      <li>Tocá <strong>Descargar datos.json</strong>.</li>
-      <li>Subí ese archivo a tu hosting, al lado de <code>index.html</code>, reemplazando el que estaba.</li>
-      <li>Listo: la página ya muestra los cambios para todo el mundo.</li>
+      ${pend.length ? `<li>Bajá <strong>fotos.zip</strong> y descomprimilo: te queda una carpeta <code>fotos</code>.</li>` : ""}
+      <li>Bajá <strong>datos.json</strong>.</li>
+      <li>En GitHub: <strong>Add file → Upload files</strong>, arrastrá ${pend.length ? "la carpeta <code>fotos</code> y el " : "el "}<code>datos.json</code>, y confirmá.</li>
+      <li>Vercel redespliega solo en menos de un minuto.</li>
     </ol>
+
+    ${pend.length ? `<div class="fld"><label>Fotos sin subir</label>
+      <p class="peso">${pend.length} ${pend.length === 1 ? "foto" : "fotos"} · ${pesoFotos} KB</p>
+      <p class="hint">Hasta que no las subas, esas prendas se van a ver con el rayado de “foto en camino”.</p></div>` : ""}
+
     <div class="fld"><label>Peso del catálogo</label>
-      <p class="peso ${alto ? "alto" : ""}">${kb} KB${alto ? " — está pesado, sacá o achicá fotos" : " — bien"}</p>
-      <p class="hint">Casi todo el peso son las fotos. Por debajo de 3000 KB la página abre rápido en celular.</p></div>
+      <p class="peso ${kb > 300 ? "alto" : ""}">${kb} KB${kb > 300 ? " — algo pesado" : " — bien"}</p>
+      <p class="hint">Ahora las fotos van aparte, así que este archivo tiene que quedar chico.</p></div>
+
     <div class="fld"><label for="jsonOut">O copiá el contenido a mano</label>
-      <textarea id="jsonOut" readonly style="min-height:140px;font-family:ui-monospace,monospace;font-size:12px;">${esc(json)}</textarea></div>`;
+      <textarea id="jsonOut" readonly style="min-height:120px;font-family:ui-monospace,monospace;font-size:12px;">${esc(json)}</textarea></div>`;
+
   acc.innerHTML = `
     <button class="btn btn-ghost" id="btnDescartar">Descartar cambios</button>
+    ${pend.length ? `<button class="btn btn-ghost" id="btnZip">Descargar fotos.zip (${pend.length})</button>` : ""}
     <button class="btn btn-solid" id="btnDescargar">Descargar datos.json</button>`;
+}
+
+/* ==============================================================
+   ZIP mínimo (método "store", sin comprimir: los JPEG ya lo están).
+   Evita depender de una librería externa.
+   ============================================================== */
+const CRC_TABLA = (() => {
+  const t = new Uint32Array(256);
+  for(let i = 0; i < 256; i++){
+    let c = i;
+    for(let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[i] = c >>> 0;
+  }
+  return t;
+})();
+function crc32(bytes){
+  let c = 0xFFFFFFFF;
+  for(let i = 0; i < bytes.length; i++) c = CRC_TABLA[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function b64aBytes(dataUrl){
+  const bin = atob(String(dataUrl).split(",")[1] || "");
+  const out = new Uint8Array(bin.length);
+  for(let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+function armarZip(archivos){           // [{nombre, bytes}]
+  const enc = new TextEncoder();
+  const locales = [], central = [];
+  let offset = 0;
+
+  for(const a of archivos){
+    const nombre = enc.encode(a.nombre);
+    const crc = crc32(a.bytes), n = a.bytes.length;
+
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0, true);
+    lh.setUint16(8, 0, true);   // store
+    lh.setUint16(10, 0, true); lh.setUint16(12, 0x21, true);  // hora/fecha fijas
+    lh.setUint32(14, crc, true); lh.setUint32(18, n, true); lh.setUint32(22, n, true);
+    lh.setUint16(26, nombre.length, true); lh.setUint16(28, 0, true);
+    locales.push(new Uint8Array(lh.buffer), nombre, a.bytes);
+
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true);
+    ch.setUint16(8, 0, true); ch.setUint16(10, 0, true);
+    ch.setUint16(12, 0, true); ch.setUint16(14, 0x21, true);
+    ch.setUint32(16, crc, true); ch.setUint32(20, n, true); ch.setUint32(24, n, true);
+    ch.setUint16(28, nombre.length, true);
+    ch.setUint32(42, offset, true);
+    central.push(new Uint8Array(ch.buffer), nombre);
+
+    offset += 30 + nombre.length + n;
+  }
+
+  const tamCentral = central.reduce((s, x) => s + x.length, 0);
+  const eo = new DataView(new ArrayBuffer(22));
+  eo.setUint32(0, 0x06054b50, true);
+  eo.setUint16(8, archivos.length, true); eo.setUint16(10, archivos.length, true);
+  eo.setUint32(12, tamCentral, true); eo.setUint32(16, offset, true);
+
+  return new Blob([...locales, ...central, new Uint8Array(eo.buffer)], { type:"application/zip" });
+}
+
+async function descargarZip(){
+  const pend = fotosPendientes();
+  if(!pend.length) return;
+  const zip = armarZip(pend.map(r => ({ nombre:r, bytes:b64aBytes(D._pendientes[r]) })));
+  await entregar("fotos.zip", zip);
+  // Ya están entregadas: las sacamos de la cola para que el borrador no crezca.
+  pend.forEach(r => { delete D._pendientes[r]; });
+  guardarBorrador(); pintarPanel();
 }
 
 function datosLimpios(){
@@ -1068,30 +1184,41 @@ function datosLimpios(){
   };
 }
 
-async function descargarJson(){
-  const datos = datosLimpios();
-  const texto = JSON.stringify(datos, null, 2);
-  // En un artifact publicado los <a download> están bloqueados: hay que
-  // pedirle al visor que guarde el archivo.
+/* Entrega un archivo al usuario. En un artifact publicado los <a download>
+   están bloqueados, así que primero probamos con el visor. */
+async function entregar(nombre, contenido){
   try {
     const dl = window.claude && window.claude.use ? await window.claude.use("downloads") : null;
-    if(dl){ await dl.save({ filename:"datos.json", data:texto }); marcarPublicado(datos); return; }
+    if(dl){ await dl.save({ filename:nombre, data:contenido }); return true; }
   } catch(e){ /* el visor puede rechazar: caemos al método común */ }
   try {
-    const url = URL.createObjectURL(new Blob([texto], {type:"application/json"}));
+    const blob = contenido instanceof Blob ? contenido : new Blob([contenido], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = "datos.json";
+    a.href = url; a.download = nombre;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
-    marcarPublicado(datos);
+    return true;
   } catch(e){
-    alert("No se pudo descargar acá. Copiá el texto del recuadro y pegalo en un archivo llamado datos.json.");
+    alert(`No se pudo descargar "${nombre}" en este navegador.`);
+    return false;
   }
+}
+
+async function descargarJson(){
+  const datos = datosLimpios();
+  if(await entregar("datos.json", JSON.stringify(datos, null, 2))) marcarPublicado(datos);
 }
 
 function marcarPublicado(datos){
   // El borrador local ya no es "más nuevo" que lo publicado.
   D.build = datos.build;
+  if(fotosPendientes().length){
+    // Todavía hay fotos sin bajar: si borramos el borrador, se pierden.
+    guardarBorrador();
+    alert("Bajaste el datos.json, pero todavía te quedan fotos sin descargar.\n\nBajá también el fotos.zip antes de cerrar.");
+    return;
+  }
   hayBorrador = false;
   try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
   pintarFlag();
@@ -1158,7 +1285,7 @@ document.addEventListener("click", async (e) => {
       ref: gp.dataset.ref, nombre,
       categoria: $("p-cat").value, talle: $("p-talle").value.trim() || "Único",
       estado: $("p-estado").value, precio: Number(precio),
-      desc: $("p-desc").value.trim(), fotos: fotosTmp.slice(),
+      desc: $("p-desc").value.trim(), fotos: fotosTmp.map(f => f.ruta),
       venta: $("p-venta").value, nueva: $("p-nueva").value === "si"
     };
     if(gp.dataset.nueva === "true") D.prendas.unshift(datos);
@@ -1168,8 +1295,22 @@ document.addEventListener("click", async (e) => {
   }
 
   const fd = hit("[data-fotodel]");
-  if(fd){ fotosTmp.splice(Number(fd.dataset.fotodel), 1); return pintarFotos(); }
+  if(fd){
+    const [q] = fotosTmp.splice(Number(fd.dataset.fotodel), 1);
+    // Si era una foto nueva sin subir, no tiene sentido dejarla en la cola.
+    if(q && q.nueva && D._pendientes) delete D._pendientes[q.ruta];
+    return pintarFotos();
+  }
   if(hit("#fotoAdd")) return $("fotoInput").click();
+  if(hit("#btnAddUrl")){
+    const u = $("p-url").value.trim();
+    if(!u) return;
+    if(!/^https?:\/\//i.test(u)){ alert("El link tiene que empezar con http:// o https://"); return; }
+    if(fotosTmp.length >= 3){ alert("Ya hay 3 fotos. Sacá una para sumar otra."); return; }
+    fotosTmp.push({ ruta:u, src:u, nueva:false });
+    $("p-url").value = "";
+    return pintarFotos();
+  }
 
   /* --- panel: info --- */
   if(hit("#btnGuardarInfo")){
@@ -1208,6 +1349,7 @@ document.addEventListener("click", async (e) => {
 
   /* --- panel: publicar --- */
   if(hit("#btnDescargar")) return descargarJson();
+  if(hit("#btnZip")) return descargarZip();
   if(hit("#btnDescartar")){
     if(!confirm("¿Descartar todos los cambios sin publicar y volver a lo que está online?")) return;
     try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
@@ -1222,9 +1364,15 @@ document.addEventListener("keydown", (e) => {
 
 $("fotoInput").addEventListener("change", async (e) => {
   const files = Array.from(e.target.files).slice(0, 3 - fotosTmp.length);
+  const ref = ($("btnGuardarPrenda") || {}).dataset ? $("btnGuardarPrenda").dataset.ref : "foto";
   for(const f of files){
-    try { fotosTmp.push(await achicar(f)); }
-    catch(err){ alert("No se pudo leer una de las fotos."); }
+    try {
+      const dataUrl = await achicar(f);
+      const ruta = `fotos/${String(ref).toLowerCase()}-${Math.random().toString(36).slice(2,6)}.jpg`;
+      D._pendientes = D._pendientes || {};
+      D._pendientes[ruta] = dataUrl;
+      fotosTmp.push({ ruta, src:dataUrl, nueva:true });
+    } catch(err){ alert("No se pudo leer una de las fotos."); }
   }
   pintarFotos();
   e.target.value = "";
