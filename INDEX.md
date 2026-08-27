@@ -14,7 +14,7 @@ aproximados: si editaste `index.html`, verificá con `grep -n`.
 | `README.md` | Cómo actualizar el catálogo |
 | `CLAUDE.md` | Reglas del proyecto (se cargan solas) |
 
-Repo `santimestralet-glitch/Mestra` → Vercel → https://victoria-moda-circular.vercel.app
+Repo `santimestralet-glitch/Mestra` → Vercel → https://victoriamodacircular.com
 `git push` publica solo.
 
 Ojo con Vercel: ese dominio cuelga del proyecto llamado **`mestra`**, no del que
