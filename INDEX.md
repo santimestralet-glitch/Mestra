@@ -60,6 +60,10 @@ y https://victoria-moda-circular.vercel.app. `git push` publica solo.
   `render` (944), `renderResenas`, `renderInfo`, `renderFaq`, `renderFooter`,
   `renderTodo` (1051)
 - **Acciones**: `comprar` (1056), `compartir`, `toggleFav`
+- **Ventas**: `ventas[]` en localStorage (`victoria:ventas`, nunca en `datos.json`),
+  `fechaISO`/`hoyISO`/`lunesDeEstaSemana` (fecha local, no UTC), `registrarVenta`,
+  `tabVentas`; el Excel lo arman `colLetra`, `celdaXml`, `hojaXml`, `armarExcel` y
+  `descargarExcel`, reusando `armarZip` porque un `.xlsx` es un ZIP de XMLs
 - **Panel**: `pintarPanel` (1212), `listaPrendas`, `formPrenda` (1240),
   `formInfo` (1343), `listaResenas`, `listaFaqs`, `tabPublicar` (1420),
   `achicar` (1320, redimensiona fotos), `datosLimpios` (1524)

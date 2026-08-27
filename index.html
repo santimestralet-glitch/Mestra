@@ -379,6 +379,23 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .peso{font-variant-numeric:tabular-nums;font-weight:600;}
 .peso.alto{color:var(--danger);}
 
+/* ---- ventas ----
+   El oro sigue siendo estructura: filete arriba del total y el número en
+   oro, nunca un bloque dorado de fondo. */
+.vt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media (max-width:640px){ .vt-grid{grid-template-columns:1fr 1fr;} }
+.vt-caja{border:1px solid var(--line);border-top:2px solid var(--accent);background:var(--surface);padding:12px 14px;border-radius:0 0 var(--radius) var(--radius);}
+.vt-caja dt{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.vt-caja dd{margin:6px 0 0;font-family:var(--f-display);font-size:23px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1;}
+.vt-caja .vt-cant{display:block;margin-top:3px;font-family:var(--f-body);font-size:12.5px;font-weight:400;color:var(--muted);}
+.vt-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);}
+.vt-row .vt-fecha{font-family:var(--f-tag);font-size:11.5px;color:var(--muted);white-space:nowrap;}
+.vt-row .vt-txt b{display:block;font-size:14.5px;}
+.vt-row .vt-txt span{font-size:12px;color:var(--muted);}
+.vt-row .vt-monto{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.vt-row button{min-height:36px;padding:6px 10px;border:1px solid var(--line-strong);border-radius:var(--radius);background:transparent;color:var(--danger);border-color:var(--danger);cursor:pointer;font-size:12.5px;}
+.vt-falta{color:var(--warn);font-weight:600;}
+
 /* ---- fotos del local ----
    Tres tomas reales, en 3:4 como las prendas. En el celular la tercera
    se esconde para no apilar de más. */
@@ -691,6 +708,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
     </div>
     <div class="panel-tabs" role="tablist">
       <button role="tab" data-tab="prendas"  aria-selected="true">Prendas</button>
+      <button role="tab" data-tab="ventas"   aria-selected="false">Ventas</button>
       <button role="tab" data-tab="info"     aria-selected="false">Información</button>
       <button role="tab" data-tab="resenas"  aria-selected="false">Reseñas</button>
       <button role="tab" data-tab="faqs"     aria-selected="false">Preguntas</button>
@@ -1184,6 +1202,172 @@ function toggleFav(ref){
 }
 
 /* ==============================================================
+   VENTAS
+
+   Las ventas NO viajan en datos.json: ese archivo lo sirve el sitio y
+   cualquiera puede abrirlo. Los números de Victoria viven sólo en su
+   navegador y en el Excel que se baja. Por eso el Excel no es un lujo:
+   es el único lugar donde los datos sobreviven.
+   ============================================================== */
+const VENTAS_KEY = "victoria:ventas";
+let ventas = [];
+try { ventas = JSON.parse(localStorage.getItem(VENTAS_KEY)) || []; } catch(e){ ventas = []; }
+const guardarVentas = () => { try { localStorage.setItem(VENTAS_KEY, JSON.stringify(ventas)); } catch(e){} };
+
+/* Fecha local, no UTC: toISOString() en Argentina (UTC-3) devuelve el día
+   siguiente a partir de las 21:00, y una venta de la noche caería en el
+   día equivocado. */
+function fechaISO(d){
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+const hoyISO = () => fechaISO(new Date());
+function lunesDeEstaSemana(){
+  const d = new Date(); d.setHours(0,0,0,0);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7));   // 0 = lunes
+  return fechaISO(d);
+}
+const sumaVentas = (arr) => arr.reduce((a,v) => a + Number(v.precio || 0), 0);
+const fechaLinda = (iso) => { const [a,m,d] = iso.split("-"); return `${d}/${m}`; };
+
+function registrarVenta(p){
+  ventas.unshift({
+    id: "v" + Date.now() + Math.random().toString(36).slice(2,6),
+    fecha: hoyISO(),
+    ref: p.ref, nombre: p.nombre, categoria: p.categoria,
+    precio: Number(p.precio || 0), pago: "", nota: ""
+  });
+  guardarVentas();
+}
+
+function tabVentas(body, acc){
+  const hoy = hoyISO(), lunes = lunesDeEstaSemana(), mes = hoy.slice(0,7);
+  const deHoy    = ventas.filter(v => v.fecha === hoy);
+  const deSemana = ventas.filter(v => v.fecha >= lunes);
+  const deMes    = ventas.filter(v => v.fecha.slice(0,7) === mes);
+  const caja = (t, arr) => `<div class="vt-caja"><dt>${t}</dt><dd>${money(sumaVentas(arr))}
+    <span class="vt-cant">${arr.length} ${arr.length === 1 ? "prenda" : "prendas"}</span></dd></div>`;
+
+  body.innerHTML = `
+    <dl class="vt-grid" style="margin:0;">
+      ${caja("Hoy", deHoy)}${caja("Esta semana", deSemana)}${caja("Este mes", deMes)}${caja("Histórico", ventas)}
+    </dl>
+
+    <div class="fld"><label for="vt-nombre">Cargar una venta a mano</label>
+      <input id="vt-nombre" placeholder="Qué vendiste (si no está en el catálogo)">
+      <div class="fld2" style="margin-top:8px;">
+        <input id="vt-precio" type="number" inputmode="numeric" placeholder="Precio">
+        <input id="vt-fecha" type="date" value="${hoy}">
+      </div>
+      <p class="hint">Cuando marcás una prenda como <strong>vendida</strong> en la pestaña Prendas, la venta se anota sola con el precio del catálogo. Esto es sólo para lo que no está publicado.</p></div>
+
+    ${ventas.length ? `<div>
+      <label class="label" style="display:block;margin-bottom:6px;">Últimas ventas</label>
+      ${ventas.slice(0,40).map(v => `
+      <div class="vt-row">
+        <span class="vt-fecha">${esc(fechaLinda(v.fecha))}</span>
+        <div class="vt-txt"><b>${esc(v.nombre)}</b>
+          <span>${v.ref ? esc(v.ref) + " · " : ""}${v.pago ? esc(v.pago) : `<span class="vt-falta">sin forma de pago</span>`}</span></div>
+        <span class="vt-monto">${money(v.precio)}</span>
+        <button data-vtdel="${esc(v.id)}" aria-label="Borrar la venta de ${esc(v.nombre)}">✕</button>
+      </div>`).join("")}
+      ${ventas.length > 40 ? `<p class="hint" style="margin-top:10px;">Se muestran las 40 más recientes. En el Excel están todas.</p>` : ""}
+    </div>` : `<p class="nota">Todavía no hay ventas anotadas. Marcá una prenda como <strong>vendida</strong> en Prendas y aparece acá sola.</p>`}
+
+    <p class="nota"><strong>Bajate el Excel seguido.</strong> Las ventas se guardan en este navegador
+    nada más: no viajan al sitio ni las ve nadie más que vos. Si se borran los datos del navegador o
+    cambiás de computadora, lo único que queda es el Excel que descargaste.</p>`;
+
+  acc.innerHTML = `
+    <button class="btn btn-ghost" id="btnVentaManual">Agregar esa venta</button>
+    <button class="btn btn-solid" id="btnExcel"${ventas.length ? "" : " disabled"}>Descargar Excel${ventas.length ? ` (${ventas.length})` : ""}</button>`;
+}
+
+/* ---------- el .xlsx ----------
+   Un .xlsx es un ZIP con XMLs adentro, y el armador de ZIP ya está hecho
+   (es el mismo que arma fotos.zip). Así que el Excel sale sin sumar una
+   sola dependencia, que es la regla de la casa. */
+const colLetra = (n) => { let s = ""; n++; while(n > 0){ const r = (n-1) % 26; s = String.fromCharCode(65+r) + s; n = (n-1-r)/26; } return s; };
+const xmlEsc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
+/* Excel cuenta los días desde el 30/12/1899. */
+const serieFecha = (iso) => { const [a,m,d] = iso.split("-").map(Number); return Math.round((Date.UTC(a,m-1,d) - Date.UTC(1899,11,30)) / 86400000); };
+
+/* t: "txt" | "tit" (negrita) | "fec" | "pes" (pesos) | "num" */
+function celdaXml(ref, c){
+  if(!c || c.v === "" || c.v == null) return "";
+  if(c.t === "fec") return `<c r="${ref}" s="2"><v>${serieFecha(c.v)}</v></c>`;
+  if(c.t === "pes") return `<c r="${ref}" s="3"><v>${Number(c.v)}</v></c>`;
+  if(c.t === "num") return `<c r="${ref}"><v>${Number(c.v)}</v></c>`;
+  return `<c r="${ref}"${c.t === "tit" ? ' s="1"' : ""} t="inlineStr"><is><t xml:space="preserve">${xmlEsc(c.v)}</t></is></c>`;
+}
+function hojaXml(filas, anchos){
+  const cols = anchos ? `<cols>${anchos.map((w,i) => `<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("")}</cols>` : "";
+  const cuerpo = filas.map((f,i) =>
+    `<row r="${i+1}">${f.map((c,j) => celdaXml(colLetra(j) + (i+1), c)).join("")}</row>`).join("");
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${cols}<sheetData>${cuerpo}</sheetData></worksheet>`;
+}
+
+function armarExcel(){
+  const T = v => ({v, t:"tit"}), X = v => ({v, t:"txt"});
+  const F = v => ({v, t:"fec"}), P = v => ({v, t:"pes"}), N = v => ({v, t:"num"});
+
+  const orden = ventas.slice().sort((a,b) => a.fecha < b.fecha ? 1 : a.fecha > b.fecha ? -1 : 0);
+  const hoja1 = [[T("Fecha"), T("Referencia"), T("Prenda"), T("Categoría"), T("Precio"), T("Forma de pago"), T("Nota")]]
+    .concat(orden.map(v => [F(v.fecha), X(v.ref), X(v.nombre), X(v.categoria), P(v.precio), X(v.pago), X(v.nota)]));
+
+  const hoy = hoyISO(), lunes = lunesDeEstaSemana(), mes = hoy.slice(0,7);
+  const periodo = (t, arr) => [X(t), N(arr.length), P(sumaVentas(arr))];
+  const porMes = {}, porCat = {};
+  ventas.forEach(v => {
+    const m = v.fecha.slice(0,7);
+    (porMes[m] = porMes[m] || []).push(v);
+    const c = v.categoria || "Sin categoría";
+    (porCat[c] = porCat[c] || []).push(v);
+  });
+
+  let hoja2 = [
+    [T("Resumen de ventas"), X("generado el " + fechaISO(new Date()))], [],
+    [T("Período"), T("Prendas"), T("Total")],
+    periodo("Hoy", ventas.filter(v => v.fecha === hoy)),
+    periodo("Esta semana", ventas.filter(v => v.fecha >= lunes)),
+    periodo("Este mes", ventas.filter(v => v.fecha.slice(0,7) === mes)),
+    periodo("Histórico", ventas), [],
+    [T("Por mes"), T("Prendas"), T("Total")]
+  ];
+  Object.keys(porMes).sort().reverse().forEach(m => hoja2.push(periodo(m, porMes[m])));
+  hoja2.push([], [T("Por categoría"), T("Prendas"), T("Total")]);
+  Object.keys(porCat).sort((a,b) => sumaVentas(porCat[b]) - sumaVentas(porCat[a]))
+    .forEach(c => hoja2.push(periodo(c, porCat[c])));
+
+  const REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+  const archivos = [
+    ["[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`],
+    ["_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${REL}/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+    ["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="${REL}"><sheets><sheet name="Ventas" sheetId="1" r:id="rId1"/><sheet name="Resumen" sheetId="2" r:id="rId2"/></sheets></workbook>`],
+    ["xl/_rels/workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${REL}/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${REL}/worksheet" Target="worksheets/sheet2.xml"/><Relationship Id="rId3" Type="${REL}/styles" Target="styles.xml"/></Relationships>`],
+    ["xl/styles.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="dd/mm/yyyy"/><numFmt numFmtId="165" formatCode="&quot;$&quot;#,##0"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`],
+    ["xl/worksheets/sheet1.xml", hojaXml(hoja1, [11,12,34,14,12,16,30])],
+    ["xl/worksheets/sheet2.xml", hojaXml(hoja2, [22,10,14])]
+  ];
+
+  const enc = new TextEncoder();
+  return armarZip(archivos.map(([nombre, xml]) => ({ nombre, bytes: enc.encode(xml) })));
+}
+
+async function descargarExcel(){
+  if(!ventas.length) return;
+  // armarZip devuelve un blob de tipo zip; el .xlsx es un zip, pero le
+  // ponemos el tipo que corresponde para que Windows lo mande a Excel.
+  const xlsx = new Blob([armarExcel()], { type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  await entregar(`ventas-victoria-${hoyISO()}.xlsx`, xlsx);
+}
+
+/* ==============================================================
    PANEL DE ORGANIZADORA
    ============================================================== */
 function pintarFlag(){
@@ -1326,6 +1510,7 @@ function pintarPanel(){
   acc.innerHTML = "";
 
   if(tabActiva === "prendas")  return editandoRef !== null ? formPrenda(body, acc) : listaPrendas(body, acc);
+  if(tabActiva === "ventas")   return tabVentas(body, acc);
   if(tabActiva === "info")     return formInfo(body, acc);
   if(tabActiva === "resenas")  return listaResenas(body, acc);
   if(tabActiva === "faqs")     return listaFaqs(body, acc);
@@ -1746,6 +1931,12 @@ document.addEventListener("click", async (e) => {
       desc: $("p-desc").value.trim(), fotos: fotosTmp.map(f => f.ruta),
       venta: $("p-venta").value, nueva: $("p-nueva").value === "si"
     };
+    /* Marcar "vendida" ES el evento de venta, así que se anota sola: si
+       hubiera que cargarla aparte, tarde o temprano no se carga. Sólo en
+       la transición, no cada vez que se guarda una prenda ya vendida. */
+    const antes = D.prendas.find(x => x.ref === datos.ref);
+    if(datos.venta === "vendida" && (!antes || antes.venta !== "vendida")) registrarVenta(datos);
+
     if(gp.dataset.nueva === "true") D.prendas.unshift(datos);
     else D.prendas = D.prendas.map(x => x.ref === datos.ref ? datos : x);
     guardarBorrador(); editandoRef = null; fotosTmp = [];
@@ -1804,6 +1995,26 @@ document.addEventListener("click", async (e) => {
   }
   const fdel = hit("[data-fdel]");
   if(fdel){ D.faqs.splice(Number(fdel.dataset.fdel), 1); guardarBorrador(); renderTodo(); return pintarPanel(); }
+
+  /* --- panel: ventas --- */
+  if(hit("#btnExcel")) return descargarExcel();
+  if(hit("#btnVentaManual")){
+    const nombre = $("vt-nombre").value.trim(), precio = $("vt-precio").value, fecha = $("vt-fecha").value;
+    if(!nombre || precio === ""){ alert("Poné qué vendiste y a cuánto."); return; }
+    ventas.unshift({
+      id: "v" + Date.now() + Math.random().toString(36).slice(2,6),
+      fecha: fecha || hoyISO(), ref: "", nombre, categoria: "",
+      precio: Number(precio), pago: "", nota: "cargada a mano"
+    });
+    guardarVentas(); return pintarPanel();
+  }
+  const vdel = hit("[data-vtdel]");
+  if(vdel){
+    const v = ventas.find(x => x.id === vdel.dataset.vtdel);
+    if(v && !confirm(`¿Borrar la venta de "${v.nombre}" por ${money(v.precio)}?`)) return;
+    ventas = ventas.filter(x => x.id !== vdel.dataset.vtdel);
+    guardarVentas(); return pintarPanel();
+  }
 
   /* --- panel: publicar --- */
   if(hit("#btnDescargar")) return descargarJson();

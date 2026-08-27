@@ -36,6 +36,26 @@ al sitio hasta que los archivos están subidos**.
 - Repo: `santimestralet-glitch/Mestra`
 - Sitio: https://mestra-three.vercel.app
 
+## Las ventas
+
+En el panel hay una pestaña **Ventas** con el total de hoy, de la semana, del mes y
+el histórico.
+
+No hace falta cargar nada aparte: **cuando marcás una prenda como "vendida" en la
+pestaña Prendas, la venta se anota sola** con la fecha de hoy y el precio del
+catálogo. El botón "Cargar venta a mano" es sólo para lo que vendiste y no estaba
+publicado.
+
+El botón **Descargar Excel** baja un `.xlsx` de verdad, con dos hojas: una con
+todas las ventas y otra con los totales por período, por mes y por categoría.
+
+**Bajate el Excel seguido.** Las ventas se guardan **sólo en tu navegador**: no
+viajan al sitio, no están en el `datos.json` y no las ve nadie más que vos. Eso es
+a propósito —el `datos.json` lo puede abrir cualquiera desde internet, así que la
+plata no puede vivir ahí—, pero tiene una consecuencia: si borrás los datos del
+navegador o cambiás de computadora, **lo único que queda es el Excel que
+descargaste**.
+
 ## La clave del panel
 
 El botón "Soy la organizadora" pide una clave. En el `datos.json` no se guarda la
