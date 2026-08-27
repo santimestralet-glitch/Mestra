@@ -34,7 +34,7 @@ Los cambios del panel se guardan en tu navegador mientras trabajás, pero **no l
 al sitio hasta que los archivos están subidos**.
 
 - Repo: `santimestralet-glitch/Mestra`
-- Sitio: https://mestra-three.vercel.app
+- Sitio: https://victoria-moda-circular.vercel.app
 
 ## Las ventas
 

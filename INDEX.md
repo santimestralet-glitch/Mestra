@@ -14,8 +14,13 @@ aproximados: si editaste `index.html`, verificá con `grep -n`.
 | `README.md` | Cómo actualizar el catálogo |
 | `CLAUDE.md` | Reglas del proyecto (se cargan solas) |
 
-Repo `santimestralet-glitch/Mestra` → Vercel → https://mestra-three.vercel.app
-y https://victoria-moda-circular.vercel.app. `git push` publica solo.
+Repo `santimestralet-glitch/Mestra` → Vercel → https://victoria-moda-circular.vercel.app
+`git push` publica solo.
+
+Ojo con Vercel: ese dominio cuelga del proyecto llamado **`mestra`**, no del que
+se llama `victoria-moda-circular` (ese es un duplicado del mismo repo). Antes de
+renombrar `mestra` hay que liberarle el nombre al duplicado, o el renombre se
+rechaza.
 
 ## index.html — bloques CSS
 
