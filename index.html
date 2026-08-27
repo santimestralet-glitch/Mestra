@@ -862,7 +862,7 @@ let fotosTmp = [];       // fotos del formulario abierto
 /* ---------- utilidades ---------- */
 const $ = (id) => document.getElementById(id);
 const ESTADOS = { "Como nuevo":4, "Muy bueno":3, "Bueno":2, "Con detalles":1 };
-const CATEGORIAS = ["Camperas","Abrigos","Sweaters","Camisas","Remeras","Vestidos","Faldas","Pantalones","Calzado","Accesorios"];
+const CATEGORIAS = ["Camperas","Abrigos","Chalecos","Sweaters","Camisas","Remeras","Vestidos","Conjuntos","Faldas","Pantalones","Calzado","Accesorios"];
 
 const money = (n) => "$" + Number(n || 0).toLocaleString("es-AR");
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
