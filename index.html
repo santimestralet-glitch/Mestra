@@ -395,6 +395,17 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .vt-row .vt-monto{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
 .vt-row button{min-height:36px;padding:6px 10px;border:1px solid var(--line-strong);border-radius:var(--radius);background:transparent;color:var(--danger);border-color:var(--danger);cursor:pointer;font-size:12.5px;}
 .vt-falta{color:var(--warn);font-weight:600;}
+.ct-row{display:grid;grid-template-columns:minmax(90px,1.1fr) minmax(60px,2.4fr) 42px 34px auto;gap:10px;align-items:center;padding:7px 0;font-size:13.5px;}
+.ct-row .ct-et{color:var(--muted);}
+.ct-barra{height:7px;background:var(--surface-2);border-radius:100px;overflow:hidden;}
+.ct-barra i{display:block;height:100%;background:var(--accent);}
+.ct-row .ct-pct,.ct-row .ct-cant,.ct-row .ct-monto{font-variant-numeric:tabular-nums;text-align:right;}
+.ct-row .ct-pct{font-weight:700;color:var(--accent);}
+.ct-row .ct-cant{color:var(--muted);font-size:12.5px;}
+.ct-row .ct-monto{font-weight:600;white-space:nowrap;}
+/* Sin la barra quedan cuatro celdas, así que son cuatro columnas: con tres
+   la última se caía a un renglón nuevo. */
+@media (max-width:560px){ .ct-row{grid-template-columns:1fr 42px 30px auto;} .ct-row .ct-barra{display:none;} }
 
 /* ---- fotos del local ----
    Tres tomas reales, en 3:4 como las prendas. En el celular la tercera
@@ -1239,6 +1250,49 @@ function registrarVenta(p){
   guardarVentas();
 }
 
+/* Reparte 100 puntos sin que la suma quede en 99 ni en 101: se redondea
+   para abajo y los puntos que sobran van a las fracciones más grandes. */
+function reparteCien(valores, total){
+  if(!total) return valores.map(() => 0);
+  const exactos = valores.map(v => v * 100 / total);
+  const base = exactos.map(Math.floor);
+  const sobran = 100 - base.reduce((a,b) => a+b, 0);
+  const orden = exactos.map((e,i) => ({i, frac: e - Math.floor(e)})).sort((a,b) => b.frac - a.frac);
+  for(let k = 0; k < sobran; k++) base[orden[k % orden.length].i]++;
+  return base;
+}
+
+/* El catálogo entero es el 100%: cuántas prendas hay, en qué estado está
+   cada una y cuánta plata representa cada grupo. */
+function estadoCatalogo(){
+  const total = D.prendas.length;
+  const grupos = [["Disponibles","disponible"], ["Reservadas","reservada"], ["Vendidas","vendida"]]
+    .map(([etiqueta, v]) => { const arr = D.prendas.filter(p => p.venta === v);
+      return { etiqueta, cantidad: arr.length, monto: arr.reduce((a,p) => a + Number(p.precio||0), 0) }; });
+  const pct = reparteCien(grupos.map(g => g.cantidad), total);
+  grupos.forEach((g,i) => g.pct = pct[i]);
+  return { total, valor: D.prendas.reduce((a,p) => a + Number(p.precio||0), 0), grupos };
+}
+
+/* Categorías como porcentaje del catálogo, de la más cargada a la menos. */
+function catalogoPorCategoria(){
+  const total = D.prendas.length, por = {};
+  D.prendas.forEach(p => (por[p.categoria || "Sin categoría"] = por[p.categoria || "Sin categoría"] || []).push(p));
+  const filas = Object.keys(por).sort((a,b) => por[b].length - por[a].length)
+    .map(c => ({ etiqueta:c, cantidad:por[c].length, monto:por[c].reduce((a,p)=>a+Number(p.precio||0),0) }));
+  const pct = reparteCien(filas.map(f => f.cantidad), total);
+  filas.forEach((f,i) => f.pct = pct[i]);
+  return filas;
+}
+
+/* Prendas marcadas "vendida" en el catálogo que no tienen su venta anotada.
+   Pasa cuando el catálogo se edita fuera del panel: ahí el gancho de
+   registrarVenta nunca corre y el Excel queda corto sin que se note. */
+function ventasSinRegistrar(){
+  const anotadas = new Set(ventas.map(v => v.ref).filter(Boolean));
+  return D.prendas.filter(p => p.venta === "vendida" && !anotadas.has(p.ref));
+}
+
 function tabVentas(body, acc){
   const hoy = hoyISO(), lunes = lunesDeEstaSemana(), mes = hoy.slice(0,7);
   const deHoy    = ventas.filter(v => v.fecha === hoy);
@@ -1247,10 +1301,34 @@ function tabVentas(body, acc){
   const caja = (t, arr) => `<div class="vt-caja"><dt>${t}</dt><dd>${money(sumaVentas(arr))}
     <span class="vt-cant">${arr.length} ${arr.length === 1 ? "prenda" : "prendas"}</span></dd></div>`;
 
+  const cat = estadoCatalogo(), faltan = ventasSinRegistrar();
+  const barra = (f) => `
+    <div class="ct-row">
+      <span class="ct-et">${esc(f.etiqueta)}</span>
+      <span class="ct-barra"><i style="width:${f.pct}%"></i></span>
+      <span class="ct-pct">${f.pct}%</span>
+      <span class="ct-cant">${f.cantidad}</span>
+      <span class="ct-monto">${money(f.monto)}</span>
+    </div>`;
+
   body.innerHTML = `
     <dl class="vt-grid" style="margin:0;">
       ${caja("Hoy", deHoy)}${caja("Esta semana", deSemana)}${caja("Este mes", deMes)}${caja("Histórico", ventas)}
     </dl>
+
+    ${faltan.length ? `<p class="nota"><strong>Hay ${faltan.length} ${faltan.length === 1 ? "prenda marcada como vendida" : "prendas marcadas como vendidas"} sin la venta anotada.</strong>
+      Pasa cuando el catálogo se edita por fuera del panel. Si las anoto, entran con la fecha de hoy
+      —la real no la sabe nadie— y después les podés corregir la fecha y la forma de pago.</p>` : ""}
+
+    <div>
+      <label class="label" style="display:block;margin-bottom:8px;">El catálogo hoy — ${cat.total} ${cat.total === 1 ? "prenda" : "prendas"} = 100% · ${money(cat.valor)} en total</label>
+      ${cat.grupos.map(barra).join("")}
+    </div>
+
+    <details>
+      <summary class="label" style="cursor:pointer;margin-bottom:8px;">Ver el catálogo por categoría</summary>
+      <div style="margin-top:8px;">${catalogoPorCategoria().map(barra).join("")}</div>
+    </details>
 
     <div class="fld"><label for="vt-nombre">Cargar una venta a mano</label>
       <input id="vt-nombre" placeholder="Qué vendiste (si no está en el catálogo)">
@@ -1278,6 +1356,7 @@ function tabVentas(body, acc){
     cambiás de computadora, lo único que queda es el Excel que descargaste.</p>`;
 
   acc.innerHTML = `
+    ${faltan.length ? `<button class="btn btn-ghost" id="btnAnotarFaltantes">Anotar ${faltan.length} ${faltan.length === 1 ? "venta que falta" : "ventas que faltan"}</button>` : ""}
     <button class="btn btn-ghost" id="btnVentaManual">Agregar esa venta</button>
     <button class="btn btn-solid" id="btnExcel"${ventas.length ? "" : " disabled"}>Descargar Excel${ventas.length ? ` (${ventas.length})` : ""}</button>`;
 }
@@ -1339,6 +1418,15 @@ function armarExcel(){
   Object.keys(porCat).sort((a,b) => sumaVentas(porCat[b]) - sumaVentas(porCat[a]))
     .forEach(c => hoja2.push(periodo(c, porCat[c])));
 
+  /* El catálogo entero como 100%, para leer las ventas contra el stock y
+     no en el aire: "vendí 3" no dice nada; "vendí el 13% de la percha" sí. */
+  const cat = estadoCatalogo();
+  hoja2.push([], [T("El catálogo hoy"), T("Prendas"), T("Valor"), T("% del total")]);
+  cat.grupos.forEach(g => hoja2.push([X(g.etiqueta), N(g.cantidad), P(g.monto), N(g.pct)]));
+  hoja2.push([X("Total del catálogo"), N(cat.total), P(cat.valor), N(100)]);
+  hoja2.push([], [T("Catálogo por categoría"), T("Prendas"), T("Valor"), T("% del total")]);
+  catalogoPorCategoria().forEach(f => hoja2.push([X(f.etiqueta), N(f.cantidad), P(f.monto), N(f.pct)]));
+
   const REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
   const archivos = [
     ["[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1352,7 +1440,7 @@ function armarExcel(){
     ["xl/styles.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="dd/mm/yyyy"/><numFmt numFmtId="165" formatCode="&quot;$&quot;#,##0"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`],
     ["xl/worksheets/sheet1.xml", hojaXml(hoja1, [11,12,34,14,12,16,30])],
-    ["xl/worksheets/sheet2.xml", hojaXml(hoja2, [22,10,14])]
+    ["xl/worksheets/sheet2.xml", hojaXml(hoja2, [24,10,14,12])]
   ];
 
   const enc = new TextEncoder();
@@ -1998,6 +2086,12 @@ document.addEventListener("click", async (e) => {
 
   /* --- panel: ventas --- */
   if(hit("#btnExcel")) return descargarExcel();
+  if(hit("#btnAnotarFaltantes")){
+    const faltan = ventasSinRegistrar();
+    if(!faltan.length) return pintarPanel();
+    faltan.forEach(p => { registrarVenta(p); ventas[0].nota = "fecha estimada"; });
+    return pintarPanel();
+  }
   if(hit("#btnVentaManual")){
     const nombre = $("vt-nombre").value.trim(), precio = $("vt-precio").value, fecha = $("vt-fecha").value;
     if(!nombre || precio === ""){ alert("Poné qué vendiste y a cuánto."); return; }
