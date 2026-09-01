@@ -1,5 +1,5 @@
 {
-  "build": "2026-08-27T16:40:00.000Z",
+  "build": "2026-09-01T14:25:00.000Z",
   "config": {
     "whatsapp": "5492235813019",
     "instagram": "victoria.modacircular",
@@ -35,7 +35,7 @@
       "precio": 45000,
       "desc": "Tiro alto y pierna ancha, con tablas al frente y cintura cruzada de dos botones. Tela mate, cae derecho.",
       "fotos": ["fotos/v-101-pantalon-sastrero-azul.jpg"],
-      "venta": "disponible",
+      "venta": "vendida",
       "nueva": false
     },
     {
@@ -107,7 +107,7 @@
       "precio": 40000,
       "desc": "Corta, de tela satinada brillante, con capucha y elástico en la cintura.",
       "fotos": ["fotos/v-107-campera-inflable-negra.jpg"],
-      "venta": "disponible",
+      "venta": "vendida",
       "nueva": false
     },
     {
@@ -227,7 +227,7 @@
       "precio": 65000,
       "desc": "Chaleco y pantalón de la misma tela celeste con rayas blancas finas. El chaleco cierra con botones y el pantalón lleva cintura elástica y pierna ancha. Se llevan juntos.",
       "fotos": ["fotos/v-117-conjunto-sastrero-celeste.jpg"],
-      "venta": "disponible",
+      "venta": "reservada",
       "nueva": true
     },
     {
@@ -287,7 +287,7 @@
       "precio": 55000,
       "desc": "Rombos de lentejuelas tornasoladas al frente. Cuello redondo amplio, puños y ruedo con elástico.",
       "fotos": ["fotos/v-122-sweater-beige-lentejuelas.jpg"],
-      "venta": "disponible",
+      "venta": "vendida",
       "nueva": true
     },
     {
@@ -299,7 +299,7 @@
       "precio": 65000,
       "desc": "Tejido gris con hilo brillante, escote en V y botones plateados. Sin uso, con la etiqueta puesta.",
       "fotos": ["fotos/v-123-saquito-gris.jpg"],
-      "venta": "disponible",
+      "venta": "vendida",
       "nueva": true
     },
     {
@@ -311,7 +311,7 @@
       "precio": 65000,
       "desc": "Tachas cuadradas alrededor del escote, los hombros y los puños. Cuello redondo, con tajitos a los costados.",
       "fotos": ["fotos/v-124-sweater-gris-tachas.jpg"],
-      "venta": "disponible",
+      "venta": "vendida",
       "nueva": true
     }
   ],
