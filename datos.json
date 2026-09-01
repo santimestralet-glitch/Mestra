@@ -1,5 +1,5 @@
 {
-  "build": "2026-09-01T14:25:00.000Z",
+  "build": "2026-09-01T18:45:00.000Z",
   "config": {
     "whatsapp": "5492235813019",
     "instagram": "victoria.modacircular",
@@ -312,6 +312,78 @@
       "desc": "Tachas cuadradas alrededor del escote, los hombros y los puños. Cuello redondo, con tajitos a los costados.",
       "fotos": ["fotos/v-124-sweater-gris-tachas.jpg"],
       "venta": "vendida",
+      "nueva": true
+    },
+    {
+      "ref": "V-125",
+      "nombre": "Bolso puffer crudo",
+      "categoria": "Accesorios",
+      "talle": "Único",
+      "estado": "Como nuevo",
+      "precio": 25000,
+      "desc": "Acolchado tipo puffer en color crudo, con dos manijas cortas y una correa larga desmontable para cruzar. Amplio, cierra con cremallera.",
+      "fotos": ["fotos/v-125-bolso-puffer-crudo.jpg"],
+      "venta": "disponible",
+      "nueva": true
+    },
+    {
+      "ref": "V-126",
+      "nombre": "Mochila de cuerina suela",
+      "categoria": "Accesorios",
+      "talle": "Único",
+      "estado": "Como nuevo",
+      "precio": 25000,
+      "desc": "Cuerina color suela con placa metálica al frente y bolsillo con cierre y trenzado. Viene con un monedero redondo a juego colgando del costado.",
+      "fotos": ["fotos/v-126-mochila-cuerina-suela.jpg"],
+      "venta": "disponible",
+      "nueva": true
+    },
+    {
+      "ref": "V-127",
+      "nombre": "Mochila de cuerina camel",
+      "categoria": "Accesorios",
+      "talle": "Único",
+      "estado": "Como nuevo",
+      "precio": 25000,
+      "desc": "Cuerina camel con placa metálica y bolsillo delantero con cierre. Lleva una tira trenzada colgando y bolsillos a los costados.",
+      "fotos": ["fotos/v-127-mochila-cuerina-camel.jpg"],
+      "venta": "disponible",
+      "nueva": true
+    },
+    {
+      "ref": "V-128",
+      "nombre": "Zapatillas negras con puntera blanca",
+      "categoria": "Calzado",
+      "talle": "38",
+      "estado": "Muy bueno",
+      "precio": 28000,
+      "desc": "Lona negra con puntera de goma y suela blanca con plataforma. Cordones anchos al tono.",
+      "fotos": ["fotos/v-128-zapatillas-negras-puntera-blanca.jpg"],
+      "venta": "disponible",
+      "nueva": true
+    },
+    {
+      "ref": "V-129",
+      "nombre": "Zapatos negros acharolados",
+      "categoria": "Calzado",
+      "talle": "38",
+      "estado": "Muy bueno",
+      "precio": 48000,
+      "desc": "Acharolados, de cordón, con suela marrón y costura a la vista. De vestir, van igual con un sastrero que con un jean.",
+      "fotos": ["fotos/v-129-zapatos-negros-acharolados.jpg"],
+      "venta": "disponible",
+      "nueva": true
+    },
+    {
+      "ref": "V-130",
+      "nombre": "Zapatillas grises con plataforma",
+      "categoria": "Calzado",
+      "talle": "39",
+      "estado": "Muy bueno",
+      "precio": 38000,
+      "desc": "Botitas de gamuza gris claro con puntera de goma estriada y plataforma escondida adentro. Cordones al tono.",
+      "fotos": ["fotos/v-130-zapatillas-grises-plataforma.jpg"],
+      "venta": "disponible",
       "nueva": true
     }
   ],
