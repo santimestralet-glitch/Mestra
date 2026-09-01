@@ -1,5 +1,5 @@
 {
-  "build": "2026-09-01T18:45:00.000Z",
+  "build": "2026-09-02T13:10:00.000Z",
   "config": {
     "whatsapp": "5492235813019",
     "instagram": "victoria.modacircular",
@@ -227,7 +227,7 @@
       "precio": 65000,
       "desc": "Chaleco y pantalón de la misma tela celeste con rayas blancas finas. El chaleco cierra con botones y el pantalón lleva cintura elástica y pierna ancha. Se llevan juntos.",
       "fotos": ["fotos/v-117-conjunto-sastrero-celeste.jpg"],
-      "venta": "reservada",
+      "venta": "vendida",
       "nueva": true
     },
     {
