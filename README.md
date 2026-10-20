@@ -21,17 +21,27 @@ El campo `fotos` también acepta una URL completa, por si alguna imagen está al
 
 1. Abrí el sitio y tocá **"Soy la organizadora"** abajo de todo.
 2. Editá lo que quieras: prendas, fotos, información, reseñas, preguntas.
-3. Pestaña **Publicar**:
-   - **Descargar fotos.zip** (si agregaste fotos nuevas) y descomprimilo.
-   - **Descargar datos.json**.
-4. Pasale los dos archivos a Claude. Los pone en la carpeta y los sube.
-5. Vercel redespliega solo en menos de un minuto.
+3. Pestaña **Publicar** → botón **Publicar al sitio**.
+4. En menos de un minuto lo ven tus clientas.
 
-El repo está conectado: cada `git push` publica. Ya no hace falta subir nada
-a mano por la web de GitHub.
+La primera vez te va a pedir una **clave para publicar**. Se escribe una sola vez
+y queda guardada en ese navegador. **No es la misma** que usás para entrar al
+panel: esa abre la puerta, esta escribe en el sitio.
 
-Los cambios del panel se guardan en tu navegador mientras trabajás, pero **no llegan
-al sitio hasta que los archivos están subidos**.
+**Publicar no sube las fotos**, sólo el catálogo. Si agregaste prendas con fotos
+nuevas, bajá también el **fotos.zip** y pasáselo a Santino; hasta que no estén
+arriba, esas prendas se ven con el rayado de "foto en camino". El panel te avisa
+cuando quedan pendientes.
+
+Si publicar falla por lo que sea, el camino viejo sigue entero: **Descargar
+datos.json** y pasárselo a Santino.
+
+### Cómo funciona, por si algún día hay que tocarlo
+
+El botón manda el catálogo a `api/publicar.mjs`, que verifica la clave contra
+una guardada en Vercel y escribe el `datos.json` en GitHub. El push dispara el
+redespliegue. Los dos secretos (`CLAVE_PUBLICAR` y `GITHUB_TOKEN`) son variables
+de entorno de Vercel: no están en el repo ni en el `datos.json`.
 
 - Repo: `santimestralet-glitch/Mestra`
 - Sitio: https://victoriamodacircular.com

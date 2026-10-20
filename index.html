@@ -378,6 +378,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .nota strong{color:var(--ink);}
 .peso{font-variant-numeric:tabular-nums;font-weight:600;}
 .peso.alto{color:var(--danger);}
+.como-link{background:none;border:none;padding:0;font:inherit;color:var(--accent);text-decoration:underline;cursor:pointer;}
 
 /* ---- ventas ----
    El oro sigue siendo estructura: filete arriba del total y el número en
@@ -468,7 +469,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
   "description": "Ropa de segunda mano seleccionada en Mar del Plata. Compra directa o crédito a cuenta por las prendas que ya no usás.",
   "url": "https://victoriamodacircular.com/",
   "image": "https://victoriamodacircular.com/fotos/og-portada.jpg",
-  "telephone": "+5492235813019",
+  "telephone": "+5492236771404",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "San Juan 319",
@@ -748,7 +749,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 const DATOS_DEFECTO = {
   build: "2026-08-22T21:40:00",
   config: {
-    whatsapp: "5492235813019",
+    whatsapp: "5492236771404",
     instagram: "victoria.modacircular",
     direccion: "San Juan 319, Mar del Plata",
     comoLlegar: "https://maps.google.com/?q=San+Juan+319+Mar+del+Plata",
@@ -1806,14 +1807,35 @@ function tabPublicar(body, acc){
   const pend = fotosPendientes();
   const pesoFotos = Math.round(pend.reduce((a,r) => a + D._pendientes[r].length * 0.75, 0) / 1024);
 
+  const tieneClave = !!clavePublicarGuardada();
+
   body.innerHTML = `
-    <p class="nota">Los cambios se guardan <strong>en este navegador</strong>. Para que los vean tus clientas hay que subir los archivos:</p>
-    <ol style="padding-left:20px;display:grid;gap:8px;color:var(--muted);font-size:14.5px;line-height:1.5;">
-      ${pend.length ? `<li>Bajá <strong>fotos.zip</strong> y descomprimilo: te queda una carpeta <code>fotos</code>.</li>` : ""}
-      <li>Bajá <strong>datos.json</strong>.</li>
-      <li>En GitHub: <strong>Add file → Upload files</strong>, arrastrá ${pend.length ? "la carpeta <code>fotos</code> y el " : "el "}<code>datos.json</code>, y confirmá.</li>
-      <li>Vercel redespliega solo en menos de un minuto.</li>
-    </ol>
+    <p class="nota">Tocá <strong>Publicar al sitio</strong> y en menos de un minuto lo ven tus clientas.
+    Hasta que no lo toques, los cambios viven <strong>sólo en este navegador</strong>.</p>
+
+    <div class="fld"><label for="pubClave">Clave para publicar</label>
+      ${tieneClave
+        ? `<p class="peso">Guardada en este navegador ✓</p>
+           <p class="hint">No hace falta escribirla de nuevo. Si te equivocaste o la cambiaron,
+           <button type="button" id="btnOlvidarClave" class="como-link">borrala y poné la nueva</button>.</p>`
+        : `<input id="pubClave" type="password" autocomplete="off" placeholder="La clave que te pasó Santino">
+           <p class="hint">Se escribe una sola vez y queda guardada acá. <strong>No es la misma</strong> que usás
+           para entrar al panel: esta es sólo para publicar.</p>`}</div>
+
+    <p id="pubEstado" class="nota" hidden></p>
+
+    ${pend.length ? `<p class="nota"><strong>Ojo: publicar no sube las fotos.</strong>
+      Tenés ${pend.length} ${pend.length === 1 ? "foto nueva" : "fotos nuevas"} sin subir, y esas prendas van a
+      quedar con el rayado de “foto en camino” hasta que le pases el <code>fotos.zip</code> a Santino.</p>` : ""}
+
+    <details>
+      <summary class="label" style="cursor:pointer;">Si publicar falla, el camino a mano</summary>
+      <ol style="padding-left:20px;display:grid;gap:8px;color:var(--muted);font-size:14.5px;line-height:1.5;margin-top:10px;">
+        ${pend.length ? `<li>Bajá <strong>fotos.zip</strong> y descomprimilo: te queda una carpeta <code>fotos</code>.</li>` : ""}
+        <li>Bajá <strong>datos.json</strong>.</li>
+        <li>Pasale ${pend.length ? "los dos archivos" : "el archivo"} a Santino, que los sube.</li>
+      </ol>
+    </details>
 
     ${pend.length ? `<div class="fld"><label>Fotos sin subir</label>
       <p class="peso">${pend.length} ${pend.length === 1 ? "foto" : "fotos"} · ${pesoFotos} KB</p>
@@ -1829,7 +1851,8 @@ function tabPublicar(body, acc){
   acc.innerHTML = `
     <button class="btn btn-ghost" id="btnDescartar">Descartar cambios</button>
     ${pend.length ? `<button class="btn btn-ghost" id="btnZip">Descargar fotos.zip (${pend.length})</button>` : ""}
-    <button class="btn btn-solid" id="btnDescargar">Descargar datos.json</button>`;
+    <button class="btn btn-ghost" id="btnDescargar">Descargar datos.json</button>
+    <button class="btn btn-solid" id="btnPublicar">Publicar al sitio</button>`;
 }
 
 /* ==============================================================
@@ -1956,6 +1979,78 @@ function marcarPublicado(datos){
   hayBorrador = false;
   try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
   pintarFlag();
+}
+
+/* ---------- publicar al sitio ----------
+   La mitad del navegador de api/publicar.mjs. La clave vive sólo acá, en
+   este navegador: no viaja en datos.json ni está escrita en el código.
+   El camino a mano sigue existiendo entero: si esto falla, se baja el
+   archivo y se sube como siempre. */
+const CLAVE_PUB_KEY = "victoria:clave-publicar";
+const clavePublicarGuardada = () => {
+  try { return localStorage.getItem(CLAVE_PUB_KEY) || ""; } catch(e){ return ""; }
+};
+
+function estadoPublicar(html, malo){
+  const e = $("pubEstado");
+  if(!e) return;
+  e.hidden = !html;
+  e.innerHTML = html || "";
+  e.style.borderLeftColor = malo ? "var(--danger)" : "var(--accent)";
+}
+
+async function publicarAlSitio(){
+  let clave = clavePublicarGuardada();
+  if(!clave){
+    const campo = $("pubClave");
+    clave = campo ? campo.value.trim() : "";
+    if(!clave){
+      estadoPublicar("Escribí la clave para publicar.", true);
+      if(campo) campo.focus();
+      return;
+    }
+  }
+
+  const btn = $("btnPublicar");
+  btn.disabled = true;
+  btn.textContent = "Publicando…";
+  estadoPublicar("Mandando el catálogo…");
+
+  const datos = datosLimpios();
+  let r, cuerpo;
+  try {
+    r = await fetch("/api/publicar", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ clave, datos })
+    });
+    cuerpo = await r.json().catch(() => ({}));
+  } catch(e){
+    btn.disabled = false; btn.textContent = "Publicar al sitio";
+    estadoPublicar("No se pudo conectar. Fijate si tenés internet y volvé a probar. " +
+                   "Si sigue sin andar, bajá el <code>datos.json</code> y pasáselo a Santino.", true);
+    return;
+  }
+
+  btn.disabled = false;
+  btn.textContent = "Publicar al sitio";
+
+  if(!r.ok){
+    /* Una clave que no sirvió no se guarda, y si estaba guardada se borra:
+       si no, quedaría pidiendo con una clave vieja para siempre. */
+    if(r.status === 401){
+      try { localStorage.removeItem(CLAVE_PUB_KEY); } catch(e){}
+      pintarPanel();
+    }
+    estadoPublicar(esc(cuerpo.error || `No se pudo publicar (error ${r.status}).`), true);
+    return;
+  }
+
+  // Recién acá se guarda: una clave que ya sabemos que funciona.
+  try { localStorage.setItem(CLAVE_PUB_KEY, clave); } catch(e){}
+  marcarPublicado(datos);
+  estadoPublicar("<strong>Listo, ya está publicado.</strong> En menos de un minuto lo ven tus clientas. " +
+                 "Si entrás ahora y lo ves igual, esperá un toque y recargá la página.");
 }
 
 /* ==============================================================
@@ -2111,6 +2206,11 @@ document.addEventListener("click", async (e) => {
   }
 
   /* --- panel: publicar --- */
+  if(hit("#btnPublicar")) return publicarAlSitio();
+  if(hit("#btnOlvidarClave")){
+    try { localStorage.removeItem(CLAVE_PUB_KEY); } catch(e){}
+    return pintarPanel();
+  }
   if(hit("#btnDescargar")) return descargarJson();
   if(hit("#btnZip")) return descargarZip();
   if(hit("#btnDescartar")){
